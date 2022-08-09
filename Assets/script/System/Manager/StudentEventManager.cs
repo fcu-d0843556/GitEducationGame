@@ -7,7 +7,6 @@ using UnityEngine.UI;
 
 public class StudentEventManager : MonoBehaviour
 {
-    [SerializeField]
     string logEventApi;
 
     string jwtToken;
@@ -15,6 +14,11 @@ public class StudentEventManager : MonoBehaviour
 
     public bool isLogin { get; private set; } = false;
 
+
+    private void Awake()
+    {
+        logEventApi = GameSystemManager.GetSystem<ApiManager>().getApiUrl("logEvent");
+    }
 
     public void logStudentEvent(string eventName, string eventContent)
     {

@@ -136,7 +136,7 @@ public class Level : MonoBehaviour
         yield return StartCoroutine(GameSystemManager.GetSystem<LeaderBoard>().logLevelRecord((int)levelCost, costLines, levelInteger ));
 
         // achieve 4 
-        using (UnityWebRequest www = UnityWebRequest.Get(GameSystemManager.GetSystem<LeaderBoard>().getLeaderBoardApi() + "?level=" + levelInteger ))
+        using (UnityWebRequest www = UnityWebRequest.Get(GameSystemManager.GetSystem<ApiManager>().getApiUrl("getLevelLeaderboard") + "?level=" + levelInteger ))
         {
             yield return www.SendWebRequest();
             string jsonString = JsonHelper.fixJson(www.downloadHandler.text);

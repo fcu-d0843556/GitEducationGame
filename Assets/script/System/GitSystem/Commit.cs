@@ -11,12 +11,15 @@ public class Commit
     public Commit nextCommit;
     public Commit lastCommit;
 
+    public int branchUsed;
+
     public Commit(string name, string description)
     {
         this.name = name;
         this.description = description;
         modifiedFiles = new List<KeyValuePair<string, string>>();
         allFiles = new List<KeyValuePair<string, string>>();
+        branchUsed = 0;
     }
 
     public void addModifiedFile(KeyValuePair<string, string> file) 

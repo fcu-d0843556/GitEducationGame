@@ -7,11 +7,15 @@ using UnityEngine.UI;
 
 public class ChapterSystem : MonoBehaviour
 {
-    [SerializeField]
     string getCollectionApi;
     [SerializeField]
     List<Button> chapterButtons;
 
+
+    public void Awake()
+    {
+        getCollectionApi = GameSystemManager.GetSystem<ApiManager>().getApiUrl("getCollection");
+    }
 
     IEnumerator getLevelPassed(string username)
     {
@@ -63,7 +67,6 @@ public class ChapterSystem : MonoBehaviour
     {
         public string username;
         public LevelRecord event_content;
-
     }
     [System.Serializable]
     public class LevelRecord

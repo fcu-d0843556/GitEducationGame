@@ -17,7 +17,9 @@ public class GitSystem : MonoBehaviour , Panel
     [SerializeField]
     GameObject remoteObjects;
     [SerializeField]
-    GameObject localObjects;
+    public GameObject localObjects;
+    [SerializeField]
+    GameObject exampleTagObject;
     public GameObject nowCommit { private set; get; }
     public Repository localRepository;
 
@@ -45,17 +47,27 @@ public class GitSystem : MonoBehaviour , Panel
     public bool sync { private set; get; } = false;
     public bool conflicted { private set; get; } = false;
 
+    public bool hasStash { private set; get; } = false;
+    List<KeyValuePair<string, string>> stashFiles;
+    public int tagCounts;
+
+
     public void buildRepository()
     {
         if ( modifiedFiles == null )
         {
             modifiedFiles = new List<KeyValuePair<string, string>>();
         }
+        if (stashFiles == null)
+        {
+            stashFiles = new List<KeyValuePair<string, string>>();
+        }
         localRepository = new Repository();
         mainFlag.SetActive(true);
         mainFlag.GetComponent<Image>().color = Color.red;
         headFlag = mainFlag;
         flagObjects.Add(mainFlag);
+        nowCommit = null;
     }
 
     public bool hasRepository()
@@ -103,17 +115,18 @@ public class GitSystem : MonoBehaviour , Panel
                 newCommitObject.GetComponent<RectTransform>().localPosition = new Vector3(nowCommit.GetComponent<RectTransform>().localPosition.x - 150, nowCommit.GetComponent<RectTransform>().localPosition.y, nowCommit.GetComponent<RectTransform>().localPosition.z);
                 nowCommit = newCommitObject;
             }
-            nowCommit.GetComponentInChildren<Text>().text = newCommit.name;
+            nowCommit.GetComponentInChildren<Text>().text = name;
             nowCommit.transform.GetChild(0).GetComponent<RectTransform>().localPosition = new Vector3(100 - newCommit.name.Length * 5, -49, 0);
             // normal flag set
             headFlag.GetComponent<RectTransform>().localPosition = new Vector3(nowCommit.GetComponent<RectTransform>().localPosition.x - 160, nowCommit.GetComponent<RectTransform>().localPosition.y + 5, headFlag.GetComponent<RectTransform>().localPosition.z);
             // new branch and start commit
             if (localRepository.nowBranch.branchStart)
             {
-                nowCommit.GetComponent<RectTransform>().localPosition = new Vector3(nowCommit.GetComponent<RectTransform>().localPosition.x, nowCommit.GetComponent<RectTransform>().localPosition.y - 145, nowCommit.GetComponent<RectTransform>().localPosition.z);
+                int size = localRepository.nowBranch.nowCommit.branchUsed;
+                nowCommit.GetComponent<RectTransform>().localPosition = new Vector3(nowCommit.GetComponent<RectTransform>().localPosition.x, nowCommit.GetComponent<RectTransform>().localPosition.y - 145 * size, nowCommit.GetComponent<RectTransform>().localPosition.z);
                 nowCommit.transform.GetChild(1).GetComponent<RectTransform>().localRotation = Quaternion.Euler(0, 0, 45);
                 nowCommit.transform.GetChild(1).GetComponent<RectTransform>().localPosition = new Vector3(67, 45, 0);
-                headFlag.GetComponent<RectTransform>().localPosition = new Vector3(headFlag.GetComponent<RectTransform>().localPosition.x, headFlag.GetComponent<RectTransform>().localPosition.y - 145 + 5, headFlag.GetComponent<RectTransform>().localPosition.z);
+                headFlag.GetComponent<RectTransform>().localPosition = new Vector3(headFlag.GetComponent<RectTransform>().localPosition.x, headFlag.GetComponent<RectTransform>().localPosition.y - 140 * size, headFlag.GetComponent<RectTransform>().localPosition.z);
                 nowCommit.GetComponent<Image>().color = Random.ColorHSV();
             }
             else
@@ -124,7 +137,61 @@ public class GitSystem : MonoBehaviour , Panel
             headFlag.transform.GetChild(1).gameObject.SetActive(true);
             localRepository.Commit(newCommit);
             modifiedFiles = new List<KeyValuePair<string, string>>();
-            nowCommit.name = name + "Commit";
+            nowCommit.name = localRepository.nowBranch.branchName + "_" + newCommit.name;
+            commitObjects.Add(nowCommit);
+            //nowCommit.GetComponent<Image>().color = new Color(Random.Range(0, 255), Random.Range(0, 255), Random.Range(0, 255));
+            sync = false;
+            hasPush = false;
+        }
+    }
+
+    public void Commit(Commit commit,string branch)
+    {
+        if (hasRepository() && !conflicted)
+        {
+
+            Commit newCommit = new Commit(commit.name, "");
+            for (int i = 0; i < modifiedFiles.Count; i++)
+            {
+                newCommit.addModifiedFile(modifiedFiles[i]);
+                fileSystem.untrackFile(modifiedFiles[i].Key);
+
+            }
+            if (nowCommit == null)
+            {
+                nowCommit = startCommit;
+                startCommit.SetActive(true);
+            }
+            else
+            {
+                GameObject newCommitObject = Instantiate(GameObject.Find(branch + "_" + commit.name), nowCommit.transform.parent);
+                newCommitObject.transform.GetChild(1).gameObject.SetActive(true);
+                newCommitObject.GetComponent<RectTransform>().localPosition = new Vector3(nowCommit.GetComponent<RectTransform>().localPosition.x - 150, nowCommit.GetComponent<RectTransform>().localPosition.y, nowCommit.GetComponent<RectTransform>().localPosition.z);
+                nowCommit = newCommitObject;
+            }
+            nowCommit.GetComponentInChildren<Text>().text = newCommit.name;
+            nowCommit.transform.GetChild(0).GetComponent<RectTransform>().localPosition = new Vector3(100 - newCommit.name.Length * 5, -49, 0);
+            // normal flag set
+            headFlag.GetComponent<RectTransform>().localPosition = new Vector3(nowCommit.GetComponent<RectTransform>().localPosition.x - 160, nowCommit.GetComponent<RectTransform>().localPosition.y + 5, headFlag.GetComponent<RectTransform>().localPosition.z);
+            // new branch and start commit
+            if (localRepository.nowBranch.branchStart)
+            {
+                int size = localRepository.branches.Count;
+                nowCommit.GetComponent<RectTransform>().localPosition = new Vector3(nowCommit.GetComponent<RectTransform>().localPosition.x, nowCommit.GetComponent<RectTransform>().localPosition.y - 145, nowCommit.GetComponent<RectTransform>().localPosition.z);
+                nowCommit.transform.GetChild(1).GetComponent<RectTransform>().localRotation = Quaternion.Euler(0, 0, 45);
+                nowCommit.transform.GetChild(1).GetComponent<RectTransform>().localPosition = new Vector3(67, 45, 0);
+                headFlag.GetComponent<RectTransform>().localPosition = new Vector3(headFlag.GetComponent<RectTransform>().localPosition.x, headFlag.GetComponent<RectTransform>().localPosition.y - 140, headFlag.GetComponent<RectTransform>().localPosition.z);
+                
+            }
+            else
+            {
+                nowCommit.transform.GetChild(1).GetComponent<RectTransform>().localRotation = Quaternion.Euler(0, 0, 0);
+                nowCommit.transform.GetChild(1).GetComponent<RectTransform>().localPosition = new Vector3(67, 0, 0);
+            }
+            headFlag.transform.GetChild(1).gameObject.SetActive(true);
+            localRepository.Commit(commit);
+            modifiedFiles = new List<KeyValuePair<string, string>>();
+            nowCommit.name = localRepository.nowBranch.branchName + "_" + newCommit.name;
             commitObjects.Add(nowCommit);
             //nowCommit.GetComponent<Image>().color = new Color(Random.Range(0, 255), Random.Range(0, 255), Random.Range(0, 255));
             sync = false;
@@ -225,7 +292,6 @@ public class GitSystem : MonoBehaviour , Panel
         }
         remoteObjects = Instantiate(localObjects, localObjects.transform.parent);
         remoteObjects.GetComponent<RectTransform>().localPosition = new Vector3(0, 174, 0);
-        remoteObjects.transform.GetChild(0).GetComponent<Image>().color = Color.white;
         hasPush = true;
         sync = true;
     }
@@ -259,28 +325,32 @@ public class GitSystem : MonoBehaviour , Panel
 
     public bool cloneRepository(string remote)
     {
-        if (remotes.Contains(remote))
+        localObjects.SetActive(true);
+        cloned = true;
+        hasPush = false;
+        sync = true;
+        return true;
+        if (!remotes.Contains(remote))
         {
-            Destroy(localObjects);
             localObjects = Instantiate(remoteObjects, remoteObjects.transform.parent);
-            localObjects.GetComponent<RectTransform>().localPosition = new Vector3(0, -200, 0);
+            localObjects.GetComponent<RectTransform>().localPosition = new Vector3(0, -125, 0);
             cloned = true;
-            localRepository = serverRepository.clone();
-            mainFlag = localObjects.transform.GetChild(0).gameObject;
+            //localRepository = serverRepository;
+            //mainFlag = localObjects.transform.GetChild(0).gameObject;
             //Debug.Log(localRepository.commitCounts());
             nowCommit = localObjects.transform.GetChild(localRepository.commitCounts()).gameObject;
             sync = true;
             hasPush = false;
-            fileSystem.NewFile("index","<h1>Hello World!</h1>");
-            fileSystem.NewFile("page1", "<h2>page1</h2>");
+            //fileSystem.NewFile("index","<h1>Hello World!</h1>");
+            //fileSystem.NewFile("page1", "<h2>page1</h2>");
 
             if (modifiedFiles == null)
             {
                 modifiedFiles = new List<KeyValuePair<string, string>>();
             }
             mainFlag.GetComponent<Image>().color = Color.red;
-            headFlag = mainFlag;
-            flagObjects.Add(mainFlag);
+            //headFlag = mainFlag;
+            //flagObjects.Add(mainFlag);
             return true;
         }
         else
@@ -297,10 +367,15 @@ public class GitSystem : MonoBehaviour , Panel
             return false;
         }
         switchFlag.GetComponent<Image>().color = Color.red;
+        string oldBranch = localRepository.nowBranch.branchName;
         localRepository.switchBranch(name);
         headFlag.GetComponent<Image>().color = Color.white;
         headFlag = switchFlag;
-        nowCommit = commitObjects.Find(x => x.name == localRepository.nowBranch.nowCommit.name + "Commit");
+        nowCommit = commitObjects.Find(x => x.name == localRepository.nowBranch.branchName + "_" +localRepository.nowBranch.nowCommit.name );
+        if(nowCommit == null)
+        {
+            nowCommit = commitObjects.Find(x => x.name == oldBranch + "_" + localRepository.nowBranch.nowCommit.name);
+        }
         return true;
         
     }
@@ -316,9 +391,10 @@ public class GitSystem : MonoBehaviour , Panel
         newFlag.GetComponent<Image>().color = Color.white;
         newFlag.GetComponentInChildren<Text>().text = name;
         newFlag.transform.GetChild(0).GetComponent<RectTransform>().localPosition = new Vector3(80 - name.Length * 6, -70, 0);
-        newFlag.GetComponent<RectTransform>().position = new Vector3(headFlag.GetComponent<RectTransform>().position.x - 200, headFlag.GetComponent<RectTransform>().position.y, headFlag.GetComponent<RectTransform>().position.z);
+        newFlag.GetComponent<RectTransform>().position = new Vector3(headFlag.GetComponent<RectTransform>().position.x - 125, headFlag.GetComponent<RectTransform>().position.y, headFlag.GetComponent<RectTransform>().position.z);
         newFlag.name = name + "Flag";
         flagObjects.Add(newFlag);
+        localRepository.nowBranch.nowCommit.branchUsed++;
         return true;
     }
 
@@ -348,6 +424,60 @@ public class GitSystem : MonoBehaviour , Panel
             fileSystem.NewFile("page2", "");
             trackFile("page2", "init");
         }
+    }
+
+    public void stash()
+    {
+        hasStash = true;
+        for(int i =0; i < modifiedFiles.Count; i++)
+        {
+            stashFiles.Add(modifiedFiles[i]);
+        }
+        for (int i = 0; i < stashFiles.Count; i++)
+        {
+            untrackFile(stashFiles[i].Key);
+        }
+    }
+    
+    public void pop()
+    {
+        for (int i = 0; i < stashFiles.Count; i++)
+        {
+            trackFile(stashFiles[i].Key, stashFiles[i].Value);
+        }
+        stashFiles.Clear();
+        hasStash = false;
+    }
+
+    public void rebase(string branch)
+    {
+        List<Commit> oldBranchCommits = localRepository.getBranch(branch).commits;
+        for (int i= 0; i < oldBranchCommits.Count; i++)
+        {
+            Commit(oldBranchCommits[i], branch);
+        }
+        for (int i =0; i< commitObjects.Count; i++)
+        {
+            if(commitObjects[i].name.Contains(branch + "_"))
+            {
+                GameObject delCommitObj = commitObjects[i];
+                commitObjects.Remove(commitObjects[i]);
+                Destroy(delCommitObj);
+                i--;
+            }
+        }
+        deleteBranch(branch);
+    }
+
+    public void tag(string version)
+    {
+        tagCounts++;
+        GameObject newTagObject = Instantiate(exampleTagObject, nowCommit.transform);
+        newTagObject.GetComponent<Text>().color = nowCommit.GetComponent<Image>().color;
+        newTagObject.GetComponent<Text>().text = version;
+        newTagObject.transform.localPosition = new Vector3(95 - newTagObject.GetComponent<Text>().text.Length * 5, -72, 0);
+        newTagObject.SetActive(true);
+        newTagObject.transform.SetParent(nowCommit.transform.parent);
     }
 }
 

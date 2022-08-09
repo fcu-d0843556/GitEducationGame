@@ -15,3 +15,10 @@
 ![](https://github.com/raknza/GitEducationGame/raw/master/pics/image1.png)
 
 ![](https://github.com/raknza/GitEducationGame/raw/master/pics/image2.png)
+
+
+### 專案建置
+
+ 要在網頁上運行請切換至WebGL打包專案，同時記得修改ApiManager中的api網址。
+ 請使用可執行WebGL的網頁伺服器軟體作為載體，比如Tomcat。
+ ![](https://github.com/raknza/GitEducationGame/raw/advanced-level/pics/apiChange.png)

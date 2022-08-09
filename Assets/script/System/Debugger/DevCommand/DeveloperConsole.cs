@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
 namespace Console
@@ -35,9 +36,11 @@ namespace Console
         public InputField consoleInput;
 
         public List<string> inputLogs;
+        public ConsoleCommand lastExecuteCommand { get; private set; }
 
         [SerializeField]
         int inputIndex = -1;
+        static int consoleInputCount = 0;
 
         private void Awake()
         {
@@ -48,7 +51,7 @@ namespace Console
         private void Start()
         {
             consoleCanvas.gameObject.SetActive(true);
-            //GameSystemManager.AddSystem<DeveloperConsole>(gameObject);
+            GameSystemManager.AddSystem<DeveloperConsole>(gameObject);
             CreateCommands();
             GameSystemManager.GetSystem<PanelManager>().AddSubPanel(this);
         }
@@ -113,6 +116,8 @@ namespace Console
             }
             else
             {
+                lastExecuteCommand = Commands[_input[0]];
+                Debug.Log(lastExecuteCommand.Command);
                 Commands[_input[0]].RunCommand(_input);
             }
         }
@@ -135,10 +140,12 @@ namespace Console
                         {
                             GameSystemManager.GetSystem<StudentEventManager>().logStudentEvent("console_input", "{input:'" + inputText.text + "'}");
                         }
+
                         ParseInput(inputText.text);
                         consoleInput.text = "";
                         consoleInput.ActivateInputField();
                         inputIndex = inputLogs.Count;
+                        StartCoroutine(checkConsoleInput());
 
                     }
                 }
@@ -172,5 +179,36 @@ namespace Console
         {
             throw new System.NotImplementedException();
         }
+
+        IEnumerator checkConsoleInput()
+        {
+
+            string getConsoleEventApi =  GameSystemManager.GetSystem<ApiManager>().getApiUrl("getCollection")  + "collection=" + GameSystemManager.GetSystem<StudentEventManager>().username + "&filterKey=event_name&filterValue=console_input";
+            UnityWebRequest www = UnityWebRequest.Get(getConsoleEventApi);
+            www.SetRequestHeader("Access-Control-Allow-Origin", "*");
+            using ( www )
+            {
+                yield return www.SendWebRequest();
+                string jsonString = JsonHelper.fixJson(www.downloadHandler.text);
+                ConsoleInputEvent[] events = JsonHelper.FromJson<ConsoleInputEvent>(jsonString);
+                consoleInputCount = events.Length;
+                if (consoleInputCount >= 100)
+                {
+                    GameSystemManager.GetSystem<AchievementManager>().logAchievementByManager(8);
+                }
+            }
+
+        }
+
+
+        [System.Serializable]
+        public class ConsoleInputEvent
+        {
+            public string username;
+            public string event_name;
+            public string event_content;
+        }
+
+
     }
 }

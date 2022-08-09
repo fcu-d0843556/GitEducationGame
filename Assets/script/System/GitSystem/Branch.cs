@@ -5,6 +5,7 @@ using UnityEngine;
 public class Branch 
 {
     public Commit nowCommit { private set; get; }
+    public List<Commit> commits;
     public string branchName;
     public int commitCounts { private set; get; }
     public bool branchStart { private set; get; }
@@ -14,6 +15,7 @@ public class Branch
         branchName = name;
         commitCounts = 0;
         branchStart = false;
+        commits = new List<Commit>();
     }
 
     public void setCommit(Commit commit)
@@ -41,6 +43,7 @@ public class Branch
             }
             nowCommit = nowCommit.nextCommit;
             commitCounts++;
+            commits.Add(commit);
         }
         foreach (KeyValuePair<string, string> file in commit.modifiedFiles)
         {

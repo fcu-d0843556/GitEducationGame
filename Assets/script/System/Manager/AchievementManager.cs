@@ -32,15 +32,19 @@ public class AchievementManager : MonoBehaviour
 
     List<GameObject> achievementObjects;
 
-    [SerializeField]
     string logAchievementApi;
-    [SerializeField]
     string getOneUserAchievementsApi;
 
     public int testInput;
     public bool testSwitch;
     [SerializeField]
     List<string> monthList;
+
+    private void Awake()
+    {
+        logAchievementApi = GameSystemManager.GetSystem<ApiManager>().getApiUrl("logAchievement");
+        getOneUserAchievementsApi = GameSystemManager.GetSystem<ApiManager>().getApiUrl("getOneUserAchievements");
+    }
 
     private void Start()
     {

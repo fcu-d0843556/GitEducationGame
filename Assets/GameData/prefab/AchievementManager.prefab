@@ -229,8 +229,8 @@ MonoBehaviour:
   achievementUnlockedObject: {fileID: 3211414787003429395}
   achievementlockedObject: {fileID: 3211414786515811380}
   achievementReader: {fileID: 3211414785925075114}
-  logAchievementApi: http://140.134.25.49:8080/logAchievement
-  getOneUserAchievementsApi: http://140.134.25.49:8080/getOneUserAchievements
+  logAchievementApi: http://140.134.25.64:14253/logAchievement
+  getOneUserAchievementsApi: http://140.134.25.64:14253/getOneUserAchievements
   testInput: 6
   testSwitch: 0
   monthList:

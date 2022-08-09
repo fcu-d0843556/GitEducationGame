@@ -223,4 +223,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a00ed84615ab644eb7c763613833bfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  logEventApi: http://140.134.25.64:14250/logStudentEvent
+  logEventApi: http://140.134.25.64:14253/logStudentEvent

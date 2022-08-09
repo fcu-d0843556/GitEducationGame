@@ -1637,7 +1637,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: 9f54ca79b559f1543beebabed48a1f00, type: 3}
+  m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -2658,7 +2658,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: 9f54ca79b559f1543beebabed48a1f00, type: 3}
+  m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -6168,7 +6168,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: 9f54ca79b559f1543beebabed48a1f00, type: 3}
+  m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -9811,6 +9811,7 @@ MonoBehaviour:
   startCommit: {fileID: 633621784}
   remoteObjects: {fileID: 1971144468}
   localObjects: {fileID: 224172223}
+  exampleTagObject: {fileID: 0}
   fileSystem: {fileID: 764512350}
   conflictSystem: {fileID: 0}
   fileInputField: {fileID: 31803701}
@@ -9818,6 +9819,7 @@ MonoBehaviour:
   gitFileObject: {fileID: 822944165}
   remotes:
   - server
+  tagCounts: 0
 --- !u!1 &2041511702
 GameObject:
   m_ObjectHideFlags: 0

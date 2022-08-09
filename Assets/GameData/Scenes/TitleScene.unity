@@ -447,8 +447,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc5a7b6aaafd00f448ca4fe30b839880, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loginApi: http://140.134.25.49:8080/login
-  registerApi: http://140.134.25.49:8080/createUser
   loginDialogue: {fileID: 1420834049}
   startButton: {fileID: 957292144}
   chapterButton: {fileID: 1287324796}
@@ -2282,9 +2280,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc03a241288fca4449e5557f8e19a522, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leaderBoardApi: http://140.134.25.49:8080/getLevelLeaderboard
-  logLevelRecordApi: http://140.134.25.49:8080/logLevelRecord
-  getAllUsersPointsApi: http://140.134.25.49:8080/getAllUsersPoints
   head: {fileID: 991253403}
   index: {fileID: 673140302}
   username: {fileID: 1463230958}
@@ -5070,7 +5065,7 @@ PrefabInstance:
     - target: {fileID: 114038124425410868, guid: 971877453d3f30b418c1ed95760d50c1,
         type: 3}
       propertyPath: _prefab.Array.size
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 114038124425410868, guid: 971877453d3f30b418c1ed95760d50c1,
         type: 3}
@@ -5089,6 +5084,12 @@ PrefabInstance:
       propertyPath: _prefab.Array.data[3]
       value: 
       objectReference: {fileID: 3440097381577918893, guid: 3eb741163404e044bac7c1bf5a13afe3,
+        type: 3}
+    - target: {fileID: 114038124425410868, guid: 971877453d3f30b418c1ed95760d50c1,
+        type: 3}
+      propertyPath: _prefab.Array.data[4]
+      value: 
+      objectReference: {fileID: 7651982791664785496, guid: ee5ef523cc37e774e872b4e988abc40a,
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 971877453d3f30b418c1ed95760d50c1, type: 3}
@@ -6873,7 +6874,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d888dc87767df184a83eebea03a48b88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  getCollectionApi: http://140.134.25.49:8080/getCollection?
   chapterButtons:
   - {fileID: 377037627}
   - {fileID: 632795051}

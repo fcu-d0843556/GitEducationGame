@@ -8,9 +8,7 @@ using UnityEngine.UI;
 public class LoginSystem : MonoBehaviour
 {
 
-    [SerializeField]
     string loginApi;
-    [SerializeField]
     string registerApi;
     [SerializeField]
     GameObject loginDialogue;
@@ -46,6 +44,8 @@ public class LoginSystem : MonoBehaviour
             loginButton.onClick.RemoveAllListeners();
             loginButton.onClick.AddListener(logout);
         }
+        loginApi = GameSystemManager.GetSystem<ApiManager>().getApiUrl("login");
+        registerApi = GameSystemManager.GetSystem<ApiManager>().getApiUrl("register");
     }
 
     public void loginDialogueShow()

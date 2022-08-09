@@ -13,13 +13,13 @@ public class GameSystemManager  {
             if (_instance == null)
             {
                 _instance = new GameSystemManager();
-                GameSystemManager.AddSystem<AudioManager>(); // 音效管理器
-                GameSystemManager.AddSystem<UnityUpdate>(); // 定期Update script
-                GameSystemManager.AddSystem<SceneStateManager>(SceneStateManager.Instance); // 場景管理器
-                GameSystemManager.AddSystem<PanelManager>(); // 介面管理器
-                GameSystemManager.AddUpdate(GameSystemManager.GetSystem<SceneStateManager>().UpdateScene); // add Update scene function
-                GameSystemManager.AddSystem<TimerManager>(TimerManager.Instance); // 計時管理器
-                GameSystemManager.AddUpdate(GameSystemManager.GetSystem<TimerManager>().Update); // add 計時 update function
+                AddSystem<AudioManager>(); // 音效管理器
+                AddSystem<UnityUpdate>(); // 定期Update script
+                AddSystem<SceneStateManager>(SceneStateManager.Instance); // 場景管理器
+                AddSystem<PanelManager>(); // 介面管理器
+                AddUpdate(GetSystem<SceneStateManager>().UpdateScene); // add Update scene function
+                AddSystem<TimerManager>(TimerManager.Instance); // 計時管理器
+                AddUpdate(GetSystem<TimerManager>().Update); // add 計時 update function
             }
 
             return _instance;

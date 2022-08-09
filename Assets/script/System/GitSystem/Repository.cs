@@ -66,6 +66,11 @@ public class Repository
         return false;
     }
 
+    public Branch getBranch(string branchName)
+    {
+        return branches.Find(x => x.branchName == branchName);
+    }
+
     public bool deleteBranch(string branchName)
     {
         if (hasBranch(branchName))

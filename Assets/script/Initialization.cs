@@ -8,9 +8,10 @@ public class Initialization : MonoBehaviour {
     List<GameObject> _prefab;
 
     // Use this for initialization
-    void Start () {
-
-        if(!GameSystemManager.GetSystem<ScreenEffect>())
+    void Awake () {
+        if (!GameSystemManager.GetSystem<ApiManager>())
+            GameSystemManager.AddSystem<ApiManager>(Instantiate(_prefab[4]));
+        if (!GameSystemManager.GetSystem<ScreenEffect>())
             GameSystemManager.AddSystem<ScreenEffect>(Instantiate(_prefab[0]));
         if (!GameSystemManager.GetSystem<StudentEventManager>())
             GameSystemManager.AddSystem<StudentEventManager>(Instantiate(_prefab[1]));

@@ -10,6 +10,7 @@ namespace Console
         public override string Command { get; protected set; }
         public override string Description { get; protected set; }
         public override string Help { get; protected set; }
+        public string type { get; private set; }
 
         public CommandGitInit()
         {
@@ -25,6 +26,7 @@ namespace Console
         {
             GitSystem gitSystem = GameObject.Find("GitObject").GetComponent<GitSystem>();
             DeveloperConsole console = GameObject.Find("DeveloperConsoleObject").GetComponent<DeveloperConsole>();
+            type = param[1];
             if( param.Length == 1)
             {
                 console.AddMessageToConsole("Error format");
@@ -169,6 +171,50 @@ namespace Console
                 else
                 {
                     gitSystem.Pull(param[2], param[3]);
+                }
+            }
+            if (param[1] == "stash")
+            {
+                if (param.Length != 2)
+                {
+                    console.AddMessageToConsole("Error format");
+                }
+                else
+                {
+                    gitSystem.stash();
+                }
+            }
+            if (param[1] == "pop")
+            {
+                if (param.Length != 2)
+                {
+                    console.AddMessageToConsole("Error format");
+                }
+                else
+                {
+                    gitSystem.pop();
+                }
+            }
+            if (param[1] == "rebase")
+            {
+                if (param.Length != 3)
+                {
+                    console.AddMessageToConsole("Error format");
+                }
+                else
+                {
+                    gitSystem.rebase(param[2]);
+                }
+            }
+            if (param[1] == "tag")
+            {
+                if (param.Length != 3)
+                {
+                    console.AddMessageToConsole("Error format");
+                }
+                else
+                {
+                    gitSystem.tag(param[2]);
                 }
             }
 
