@@ -27,6 +27,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 659.7671, y: 219.37003, z: -102.99155}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -45,22 +46,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   apiList:
   - name: login
-    url: http://140.134.25.64:14253/login
+    url: http://localhost:8080/user/login
   - name: register
-    url: http://140.134.25.64:14253/createUser
-  - name: getCollection
-    url: http://140.134.25.64:14253/getCollection?
+    url: http://localhost:8080/user/createUser
   - name: getLevelLeaderboard
-    url: http://140.134.25.64:14253/getLevelLeaderboard
+    url: http://localhost:8080/level/getLevelLeaderboard
   - name: logLevelRecord
-    url: http://140.134.25.64:14253/logLevelRecord
+    url: http://localhost:8080/level/logLevelRecord
   - name: getAllUsersPoints
-    url: http://140.134.25.64:14253/getAllUsersPoints
+    url: http://localhost:8080/user/getAllUsersPoints
   - name: logEvent
-    url: http://140.134.25.64:14253/logStudentEvent
+    url: http://localhost:8080/user/event/logUserEvent
   - name: logAchievement
-    url: http://140.134.25.64:14253/logAchievement
+    url: http://localhost:8080/achievement/logAchievement
   - name: getOneUserAchievements
-    url: http://140.134.25.64:14253/getOneUserAchievements
-  - name: 
-    url: 
+    url: http://localhost:8080/achievement/getUserAchievements
+  - name: getConsoleInput
+    url: http://localhost:8080/user/event/getUserEventFilterConsoleInput
+  - name: getLevelPassed
+    url: http://localhost:8080/user/event/getUserEventsFilterLevelPassed

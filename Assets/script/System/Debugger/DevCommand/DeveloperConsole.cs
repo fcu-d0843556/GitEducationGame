@@ -182,14 +182,17 @@ namespace Console
 
         IEnumerator checkConsoleInput()
         {
-
-            string getConsoleEventApi =  GameSystemManager.GetSystem<ApiManager>().getApiUrl("getCollection")  + "collection=" + GameSystemManager.GetSystem<StudentEventManager>().username + "&filterKey=event_name&filterValue=console_input";
-            UnityWebRequest www = UnityWebRequest.Get(getConsoleEventApi);
+            
+            string getConsoleInputApi =  GameSystemManager.GetSystem<ApiManager>().getApiUrl("getConsoleInput")  + "?username=" + GameSystemManager.GetSystem<StudentEventManager>().username;
+            
+            UnityWebRequest www = UnityWebRequest.Get(getConsoleInputApi);
             www.SetRequestHeader("Access-Control-Allow-Origin", "*");
             using ( www )
             {
+                www.SetRequestHeader("Authorization", "Bearer " + GameSystemManager.GetSystem<StudentEventManager>().getJwtToken());
                 yield return www.SendWebRequest();
                 string jsonString = JsonHelper.fixJson(www.downloadHandler.text);
+                Debug.Log("checkConsoleInput jsonString: " + jsonString);
                 ConsoleInputEvent[] events = JsonHelper.FromJson<ConsoleInputEvent>(jsonString);
                 consoleInputCount = events.Length;
                 if (consoleInputCount >= 100)
@@ -197,6 +200,24 @@ namespace Console
                     GameSystemManager.GetSystem<AchievementManager>().logAchievementByManager(8);
                 }
             }
+            // string getConsoleEventApi =  GameSystemManager.GetSystem<ApiManager>().getApiUrl("getCollection")  + "collection=" + GameSystemManager.GetSystem<StudentEventManager>().username + "&filterKey=event_name&filterValue=console_input";
+            // Debug.Log("getConsoleEventApi: " + getConsoleEventApi);
+            // Debug.Log("getApiUrl: " + GameSystemManager.GetSystem<ApiManager>().getApiUrl("getCollection"));
+            
+            // UnityWebRequest www = UnityWebRequest.Get(getConsoleEventApi);
+            // www.SetRequestHeader("Access-Control-Allow-Origin", "*");
+            // using ( www )
+            // {
+            //     www.SetRequestHeader("Authorization", "Bearer " + GameSystemManager.GetSystem<StudentEventManager>().getJwtToken());
+            //     yield return www.SendWebRequest();
+            //     string jsonString = JsonHelper.fixJson(www.downloadHandler.text);
+            //     ConsoleInputEvent[] events = JsonHelper.FromJson<ConsoleInputEvent>(jsonString);
+            //     consoleInputCount = events.Length;
+            //     if (consoleInputCount >= 100)
+            //     {
+            //         GameSystemManager.GetSystem<AchievementManager>().logAchievementByManager(8);
+            //     }
+            // }
 
         }
 

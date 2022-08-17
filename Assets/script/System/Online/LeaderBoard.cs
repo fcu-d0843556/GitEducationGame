@@ -63,6 +63,7 @@ public class LeaderBoard : MonoBehaviour
 
         using (UnityWebRequest www = UnityWebRequest.Get(leaderBoardApi + "?level=" + level))
         {
+            www.SetRequestHeader("Authorization", "Bearer " + GameSystemManager.GetSystem<StudentEventManager>().getJwtToken());
             yield return www.SendWebRequest();
             //Debug.Log(www.downloadHandler.text);
             string jsonString = JsonHelper.fixJson(www.downloadHandler.text);
@@ -76,7 +77,7 @@ public class LeaderBoard : MonoBehaviour
 
     public IEnumerator logLevelRecord(int timeCost , int lineCost , int level)
     {
-
+        Debug.Log("logLevelRecord");
         WWWForm form = new WWWForm();
 
         form.AddField("username", GameSystemManager.GetSystem<StudentEventManager>().username);
@@ -87,6 +88,7 @@ public class LeaderBoard : MonoBehaviour
         string logLevelRecordApi = GameSystemManager.GetSystem<ApiManager>().getApiUrl("logLevelRecord");
         using (UnityWebRequest www = UnityWebRequest.Post(logLevelRecordApi, form))
         {
+            www.SetRequestHeader("Authorization", "Bearer " + GameSystemManager.GetSystem<StudentEventManager>().getJwtToken());
             yield return www.SendWebRequest();
         }
 
@@ -110,9 +112,11 @@ public class LeaderBoard : MonoBehaviour
         }
         using (UnityWebRequest www = UnityWebRequest.Get(getAllUsersPointsApi))
         {
+            www.SetRequestHeader("Authorization", "Bearer " + GameSystemManager.GetSystem<StudentEventManager>().getJwtToken());
             yield return www.SendWebRequest();
             string jsonString = JsonHelper.fixJson(www.downloadHandler.text);
             pointsLeaderboardRecords = JsonHelper.FromJson<PointsRecord>(jsonString);
+            Debug.Log("jsonString" + jsonString);
             updatePointsPointsLeaderboard();
         }
 
@@ -168,8 +172,8 @@ public class LeaderBoard : MonoBehaviour
         {
             index.text = index.text + (i + 1)  + "\n";
             username.text = username.text + pointsLeaderboardRecords[i].user + "\n";
-            timeCost.text = timeCost.text + pointsLeaderboardRecords[i].points + "\n";
-            lineCost.text = lineCost.text + pointsLeaderboardRecords[i].achievements + "/10\n";
+            timeCost.text = timeCost.text + pointsLeaderboardRecords[i].gamePoints + "\n";
+            lineCost.text = lineCost.text + pointsLeaderboardRecords[i].achievementCounts + "/10\n";
         }
         contentTableTrans.sizeDelta = new Vector2(0,   showCounts * 100);
         contentTableGroup.padding.bottom = showCounts * 100;
@@ -200,8 +204,8 @@ public class LeaderBoard : MonoBehaviour
     public class PointsRecord
     {
         public string user;
-        public int points;
-        public int achievements;
+        public int gamePoints;
+        public int achievementCounts;
     }
 
 }

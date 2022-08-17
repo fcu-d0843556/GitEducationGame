@@ -17,7 +17,7 @@ public class TitleSceneState : SceneState {
 
     public override void StateStart()
     {
-        Debug.Log("State -  " + scene_name + " Start");
+        //Debug.Log("State -  " + scene_name + " Start");
         Cursor.visible = true;
     }
 

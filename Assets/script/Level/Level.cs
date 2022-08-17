@@ -107,6 +107,7 @@ public class Level : MonoBehaviour
 
     IEnumerator achievementSet()
     {
+        Debug.Log("achievementSet");
         // achieve 1
         if (nowLevel == levelScene.Level1)
         {
@@ -134,10 +135,11 @@ public class Level : MonoBehaviour
         }
         // log level record
         yield return StartCoroutine(GameSystemManager.GetSystem<LeaderBoard>().logLevelRecord((int)levelCost, costLines, levelInteger ));
-
+        
         // achieve 4 
         using (UnityWebRequest www = UnityWebRequest.Get(GameSystemManager.GetSystem<ApiManager>().getApiUrl("getLevelLeaderboard") + "?level=" + levelInteger ))
         {
+            www.SetRequestHeader("Authorization", "Bearer " + GameSystemManager.GetSystem<StudentEventManager>().getJwtToken());
             yield return www.SendWebRequest();
             string jsonString = JsonHelper.fixJson(www.downloadHandler.text);
             LeaderBoard.LevelRecord[] leaderboardRecords = JsonHelper.FromJson<LeaderBoard.LevelRecord>(jsonString);

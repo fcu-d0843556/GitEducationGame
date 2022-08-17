@@ -118,7 +118,7 @@ public class ScreenEffect : MonoBehaviour {
         fading = true;
         current_time = time;
         fade_image = black_back;
-        Debug.Log("FadeBlack");
+        //Debug.Log("FadeBlack");
     }
 
     public void FadeInGameOver(float time)

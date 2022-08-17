@@ -36,8 +36,8 @@ public class LoginSystem : MonoBehaviour
 
         if (GameSystemManager.GetSystem<StudentEventManager>().isLogin)
         {
-            loginStatus.text = "µn¤Jª¬ºA¡Gµn¤J¦¨¥\";
-            loginButton.GetComponentInChildren<Text>().text = "µn¥X±b¸¹";
+            loginStatus.text = "ç™»å…¥ç‹€æ…‹ï¼šç™»å…¥æˆåŠŸ";
+            loginButton.GetComponentInChildren<Text>().text = "ç™»å‡ºå¸³è™Ÿ";
             startButton.interactable = true;
             chapterButton.interactable = true;
             achievementButton.interactable = true;
@@ -69,7 +69,7 @@ public class LoginSystem : MonoBehaviour
         WWWForm form = new WWWForm();
         if (username.text.Equals("") || password.text.Equals(""))
         {
-            loginStatus.text = "µn¤Jª¬ºA¡G±K½X¿ù»~©Î±b¸¹¤£¦s¦b";
+            loginStatus.text = "ç™»å…¥ç‹€æ…‹ï¼šå¯†ç¢¼éŒ¯èª¤æˆ–å¸³è™Ÿä¸å­˜åœ¨";
             yield return null;
         }
         else
@@ -85,8 +85,10 @@ public class LoginSystem : MonoBehaviour
                 loginJson loginResult = JsonUtility.FromJson<loginJson>(www.downloadHandler.text);
                 if (loginResult.status)
                 {
-                    loginStatus.text = "µn¤Jª¬ºA¡Gµn¤J¦¨¥\";
-                    loginButton.GetComponentInChildren<Text>().text = "µn¥X±b¸¹";
+                    Debug.Log("loginAuth loginResult.token");
+                    Debug.Log(loginResult.token);
+                    loginStatus.text = "ç™»å…¥ç‹€æ…‹ï¼šç™»å…¥æˆåŠŸ";
+                    loginButton.GetComponentInChildren<Text>().text = "ç™»å‡ºå¸³è™Ÿ";
                     startButton.interactable = true;
                     chapterButton.interactable = true;
                     loginDialogue.SetActive(false);
@@ -98,7 +100,7 @@ public class LoginSystem : MonoBehaviour
                 }
                 else
                 {
-                    loginStatus.text = "µn¤Jª¬ºA¡G±K½X¿ù»~©Î±b¸¹¤£¦s¦b";
+                    loginStatus.text = "ç™»å…¥ç‹€æ…‹ï¼šå¯†ç¢¼éŒ¯èª¤æˆ–å¸³è™Ÿä¸å­˜åœ¨";
                 }
                 //token.text = www.downloadHandler.text;
                 //Debug.Log(token.text);
@@ -111,7 +113,7 @@ public class LoginSystem : MonoBehaviour
         WWWForm form = new WWWForm();
         if (username.text.Equals("") || password.text.Equals(""))
         {
-            loginStatus.text = "µn¤Jª¬ºA¡G±b¸¹©Î±K½X¤£¯à¬°ªÅ";
+            loginStatus.text = "ç™»å…¥ç‹€æ…‹ï¼šå¸³è™Ÿæˆ–å¯†ç¢¼ä¸èƒ½ç‚ºç©º";
             yield return null;
         }
         else
@@ -127,11 +129,11 @@ public class LoginSystem : MonoBehaviour
                 string result = www.downloadHandler.text;
                 if (result.Equals("Username had already been registered"))
                 {
-                    loginStatus.text = "µn¤Jª¬ºA¡Gµù¥U¥¢±Ñ¡A±b¸¹¤w³Qµù¥U";
+                    loginStatus.text = "ç™»å…¥ç‹€æ…‹ï¼šè¨»å†Šå¤±æ•—ï¼Œå¸³è™Ÿå·²è¢«è¨»å†Š";
                 }
                 else
                 {
-                    loginStatus.text = "µn¤Jª¬ºA¡Gµù¥U¦¨¥\¡A½Ğ«ö¤Uµn¤J¶s";
+                    loginStatus.text = "ç™»å…¥ç‹€æ…‹ï¼šè¨»å†ŠæˆåŠŸï¼Œè«‹æŒ‰ä¸‹ç™»å…¥éˆ•";
                 }
             }
         }
@@ -147,11 +149,11 @@ public class LoginSystem : MonoBehaviour
     public void logout()
     {
         GameSystemManager.GetSystem<StudentEventManager>().logout();
-        loginStatus.text = "µn¤Jª¬ºA¡G¤wµn¥X";
+        loginStatus.text = "ç™»å…¥ç‹€æ…‹ï¼šå·²ç™»å‡º";
         startButton.interactable = false;
         chapterButton.interactable = false;
         achievementButton.interactable = false;
-        loginButton.GetComponentInChildren<Text>().text = "µn¤J±b¸¹";
+        loginButton.GetComponentInChildren<Text>().text = "ç™»å…¥å¸³è™Ÿ";
         loginButton.onClick.RemoveAllListeners();
         loginButton.onClick.AddListener(loginDialogueShow);
         username.text = "";

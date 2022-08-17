@@ -99,15 +99,18 @@ public class AchievementManager : MonoBehaviour
     public IEnumerator logAchievement(int achievementId)
     {
         WWWForm form = new WWWForm();
-
+        Debug.Log("logAchievement");
         form.AddField("username", GameSystemManager.GetSystem<StudentEventManager>().username);
 
         string achievement = "{ id:" + (achievementId) + "}";
         form.AddField("achievement", achievement);
-
+        // Debug.Log("achievement: " + achievement);
+        // Debug.Log("form: " + form);
 
         using (UnityWebRequest www = UnityWebRequest.Post(logAchievementApi, form))
         {
+            
+            www.SetRequestHeader("Authorization", "Bearer " + GameSystemManager.GetSystem<StudentEventManager>().getJwtToken());
             yield return www.SendWebRequest();
 
             string result = www.downloadHandler.text;
@@ -127,14 +130,19 @@ public class AchievementManager : MonoBehaviour
 
     public IEnumerator getUserAchievements()
     {
-
-
+        Debug.Log("getUserAchievements");
+        //Debug.Log("getOneUserAchievementsApi : " + getOneUserAchievementsApi);
+        //Debug.Log("username: " + GameSystemManager.GetSystem<StudentEventManager>().username);
 
         using (UnityWebRequest www = UnityWebRequest.Get(getOneUserAchievementsApi + "?username=" + GameSystemManager.GetSystem<StudentEventManager>().username))
-        {
-            yield return www.SendWebRequest();
+        {   
+            //Debug.Log("jwtToken: " + GameSystemManager.GetSystem<StudentEventManager>().getJwtToken()); 
 
+            www.SetRequestHeader("Authorization", "Bearer " + GameSystemManager.GetSystem<StudentEventManager>().getJwtToken());
+            yield return www.SendWebRequest();
+            
             string jsonString = JsonHelper.fixJson(www.downloadHandler.text);
+            Debug.Log("jsonString: " + jsonString); 
             AchievementRecord[] achievementRecords = JsonHelper.FromJson<AchievementRecord>(jsonString);
             for (int i = 0; i < achievementRecords.Length; i++) {
                 //Debug.Log(achievementRecords[i].achievement.id);
@@ -146,6 +154,7 @@ public class AchievementManager : MonoBehaviour
 
     }
 
+    
     public void openReader()
     {
         StartCoroutine(getUserAchievements());

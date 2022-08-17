@@ -56,7 +56,7 @@ public class LoadSceneState : SceneState {
 
     public override void StateStart()
     {
-        Debug.Log("State -  " + scene_name + " Start");
+        //Debug.Log("State -  " + scene_name + " Start");
         GameSystemManager.GetSystem<TimerManager>().Add(new Timer(1.5f, LoadTargetScene));
     }
 

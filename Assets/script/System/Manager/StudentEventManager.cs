@@ -4,11 +4,12 @@ using System.Collections;
 
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using System;
 
 public class StudentEventManager : MonoBehaviour
 {
     string logEventApi;
-
+    
     string jwtToken;
     public string username {  get;  private set; }
 
@@ -28,7 +29,7 @@ public class StudentEventManager : MonoBehaviour
     IEnumerator logEvent(string eventName, string eventContent)
     {
         WWWForm form = new WWWForm();
-
+        Debug.Log("logEvent");
         form.AddField("username", username);
 
         form.AddField("eventName", eventName);
@@ -38,6 +39,7 @@ public class StudentEventManager : MonoBehaviour
 
         using (UnityWebRequest www = UnityWebRequest.Post(logEventApi, form))
         {
+            www.SetRequestHeader("Authorization", "Bearer " + GameSystemManager.GetSystem<StudentEventManager>().getJwtToken());
             yield return www.SendWebRequest();
 
             //Debug.Log("event passed : " + eventName + "\n" + eventContent);
@@ -48,6 +50,11 @@ public class StudentEventManager : MonoBehaviour
     public void setJwtToken(string jwtToken)
     {
         this.jwtToken = jwtToken;
+    }
+
+    public string getJwtToken()
+    {
+        return this.jwtToken;
     }
 
     public void setUsername(string username)
@@ -64,8 +71,5 @@ public class StudentEventManager : MonoBehaviour
         transform.GetChild(0).GetChild(0).GetComponent<Text>().text = "";
         isLogin = false;
     }
-
-
-
 
 }
