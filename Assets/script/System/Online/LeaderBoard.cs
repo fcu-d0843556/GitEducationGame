@@ -65,8 +65,9 @@ public class LeaderBoard : MonoBehaviour
         {
             www.SetRequestHeader("Authorization", "Bearer " + GameSystemManager.GetSystem<StudentEventManager>().getJwtToken());
             yield return www.SendWebRequest();
-            //Debug.Log(www.downloadHandler.text);
+            
             string jsonString = JsonHelper.fixJson(www.downloadHandler.text);
+            Debug.Log("jsonString :  "  + jsonString);
             levelLeaderboardRecords = JsonHelper.FromJson<LevelRecord>(jsonString);
 
             updateLevelLeaderboard();
@@ -140,8 +141,8 @@ public class LeaderBoard : MonoBehaviour
         {
             index.text = index.text + (i + 1) + "\n";
             username.text = username.text + levelLeaderboardRecords[i].username + "\n";
-            timeCost.text = timeCost.text + levelLeaderboardRecords[i].time_cost + "\n";
-            lineCost.text = lineCost.text + levelLeaderboardRecords[i].line_cost + "\n";
+            timeCost.text = timeCost.text + levelLeaderboardRecords[i].timeCost + "\n";
+            lineCost.text = lineCost.text + levelLeaderboardRecords[i].lineCost + "\n";
             time.text = time.text + levelLeaderboardRecords[i].time + "\n";
         }
         contentTableTrans.sizeDelta = new Vector2(0, showCounts * 100);
@@ -196,8 +197,8 @@ public class LeaderBoard : MonoBehaviour
     {
         public string username;
         public string time;
-        public string time_cost;
-        public int line_cost;
+        public string timeCost;
+        public int lineCost;
     }
 
     [System.Serializable]
