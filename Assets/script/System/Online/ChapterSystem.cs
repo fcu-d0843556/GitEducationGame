@@ -19,44 +19,6 @@ public class ChapterSystem : MonoBehaviour
         getLevelPassedApi = GameSystemManager.GetSystem<ApiManager>().getApiUrl("getLevelPassed");
     }
 
-    // IEnumerator getLevelPassed(string username)
-    // {
-    //     Debug.Log("getLevelPassed");
-    //     Debug.Log("UnityWebRequest:  " + getCollectionApi + "collection=" + username + "&filterKey=event_name" + "&filterValue=level_passed");
-    //     UnityWebRequest www = UnityWebRequest.Get(getCollectionApi + "collection=" + username + "&filterKey=event_name&filterValue=level_passed");
-    //     using ( www )
-    //     {
-    //         www.SetRequestHeader("Authorization", "Bearer " + GameSystemManager.GetSystem<StudentEventManager>().getJwtToken());
-    //         yield return www.SendWebRequest();
-    //         // Debug.Log(www.downloadHandler.text);
-    //         string jsonString = JsonHelper.fixJson(www.downloadHandler.text);
-    //         levelPassedEvent[] studentEvents = JsonHelper.FromJson<levelPassedEvent>(jsonString);
-    //         chapterButtons[0].interactable = true;
-    //         for (int i=0; i< studentEvents.Length; i++)
-    //         {
-    //             Level.levelScene myStatus;
-    //             Enum.TryParse(studentEvents[i].event_content.level, out myStatus);
-    //             if (myStatus != Level.levelScene.Level0)
-    //             {
-    //                 chapterButtons[(int)myStatus + 1].interactable = true;
-    //                 if (chapterButtons[(int)myStatus+1])
-    //                 {
-    //                     chapterButtons[(int)myStatus+1].interactable = true;
-    //                 }
-    //             }
-    //             // Debug.Log(studentEvents[i].event_content.level + " : " + myStatus);
-    //             /*if(studentEvents[i].event_content.level == ((Level.levelScene)i).ToString())
-    //             {
-    //                 chapterButtons[(int)myStatus].interactable = true;
-    //                 if (chapterButtons[i + 1])
-    //                 {
-    //                     chapterButtons[i + 1].interactable = true;
-    //                 }
-    //             }*/
-    //         }
-    //     }
-    // }
-
     public IEnumerator getUserEventsFilterLevelPassed(string username)
     {
         Debug.Log("FilterLevelPassed");
@@ -71,7 +33,9 @@ public class ChapterSystem : MonoBehaviour
             levelPassedEvent[] studentEvents = JsonHelper.FromJson<levelPassedEvent>(jsonString);
             // Debug.Log(jsonString);
             // Debug.Log(JsonHelper.FromJson<levelPassedEvent>(jsonString));
-            
+            for (int i = 0 ;i< chapterButtons.Count;i++){
+                chapterButtons[i].interactable = false;
+            }
             chapterButtons[0].interactable = true;
             for (int i=0; i< studentEvents.Length; i++)
             {

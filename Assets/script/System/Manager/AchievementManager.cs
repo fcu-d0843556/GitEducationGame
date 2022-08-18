@@ -102,9 +102,11 @@ public class AchievementManager : MonoBehaviour
         Debug.Log("logAchievement");
         form.AddField("username", GameSystemManager.GetSystem<StudentEventManager>().username);
 
+        
         string achievement = "{ id:" + (achievementId) + "}";
+        Debug.Log("achievement: " + achievement);
         form.AddField("achievement", achievement);
-        // Debug.Log("achievement: " + achievement);
+        
         // Debug.Log("form: " + form);
 
         using (UnityWebRequest www = UnityWebRequest.Post(logAchievementApi, form))
@@ -114,7 +116,8 @@ public class AchievementManager : MonoBehaviour
             yield return www.SendWebRequest();
 
             string result = www.downloadHandler.text;
-            if (!result.Equals("already have achievement"))
+            Debug.Log("result: " + result);
+            if (!result.Equals("{\"message\":\"Already have this achievement\"}"))
             {
                 achieve(achievementId,DateTime.Now.ToString());
             }
