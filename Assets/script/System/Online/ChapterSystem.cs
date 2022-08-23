@@ -30,29 +30,28 @@ public class ChapterSystem : MonoBehaviour
             yield return www.SendWebRequest();
             string jsonString = JsonHelper.fixJson(www.downloadHandler.text);
 
-            levelPassedEvent[] studentEvents = JsonHelper.FromJson<levelPassedEvent>(jsonString);
-            // Debug.Log(jsonString);
-            // Debug.Log(JsonHelper.FromJson<levelPassedEvent>(jsonString));
-            for (int i = 0 ;i< chapterButtons.Count;i++){
-                chapterButtons[i].interactable = false;
-            }
             chapterButtons[0].interactable = true;
-            for (int i=0; i< studentEvents.Length; i++)
+            try
             {
-                Level.levelScene myStatus;
-                // Debug.Log(studentEvents[i].username);
-                // Debug.Log(studentEvents[i].eventContent);
-                Enum.TryParse(studentEvents[i].eventContent.level, out myStatus);
-                if (myStatus != Level.levelScene.Level0)
+                for (int i = 1; i < chapterButtons.Count; i++)
                 {
-                    chapterButtons[(int)myStatus + 1].interactable = true;
-                    if (chapterButtons[(int)myStatus+1])
-                    {
-                        chapterButtons[(int)myStatus+1].interactable = true;
-                    }
+                    chapterButtons[i].interactable = false;
+                }
+
+                levelPassedEvent[] studentEvents = JsonHelper.FromJson<levelPassedEvent>(jsonString);
+                Debug.Log(studentEvents.Length);
+
+                for (int i = 0; i < studentEvents.Length; i++)
+                {
+                    int clearLevel = Int32.Parse(studentEvents[i].eventContent.level.Split("Level")[1]);
+                    chapterButtons[clearLevel + 1].interactable = true;
                 }
             }
-            // Debug.Log("jsonString: " + jsonString);
+            catch
+            {
+
+            }
+
         }
 
     }
