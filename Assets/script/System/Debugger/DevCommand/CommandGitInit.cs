@@ -50,15 +50,16 @@ namespace Console
             }
             if (param[1] == "add")
             {
+                Debug.Log("add");
                 if (param.Length != 3)
                 {
                     console.AddMessageToConsole("Error format");
                 }
                 else
                 {
+                    Debug.Log(param[2]);
                     gitSystem.trackFile(param[2], "test");
                 }
-
             }
             if (param[1] == "remove")
             {
@@ -74,6 +75,7 @@ namespace Console
             }
             if (param[1] == "commit")
             {
+
                 if (param.Length != 4 || param[2] != "-m" )
                 {
                     console.AddMessageToConsole("Error format");
@@ -112,8 +114,8 @@ namespace Console
                 {
                     console.AddMessageToConsole("Error format");
                 }
-                bool clone = gitSystem.cloneRepository(param[2]);
-                if (!clone)
+                bool isCloneSuccessed = gitSystem.cloneRepository(param[2]);
+                if (!isCloneSuccessed)
                 {
                     console.AddMessageToConsole("Cannot clone");
                 }

@@ -103,7 +103,9 @@ namespace Console
         public void ParseInput(string input)
         {
             string[] _input = input.Split(' ');
-
+            // for(int i=0;i<_input.Length;i++){
+            //     Debug.Log(_input[i] + " _ ");
+            // }
             if (_input.Length == 0 || _input == null)
             {
                 AddMessageToConsole("Command not recognized.");
@@ -117,7 +119,7 @@ namespace Console
             else
             {
                 lastExecuteCommand = Commands[_input[0]];
-                Debug.Log(lastExecuteCommand.Command);
+                //Debug.Log(lastExecuteCommand.Command);
                 Commands[_input[0]].RunCommand(_input);
             }
         }
@@ -125,10 +127,12 @@ namespace Console
         public void PanelInput()
         {
             //Cursor.visible = consoleCanvas.gameObject.activeInHierarchy;
+            
             if (consoleCanvas.gameObject.activeInHierarchy)
             {
                 if ( (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return )))
                 {
+
                     if (inputText.text != "")
                     {
                         AddMessageToConsole(inputText.text);
@@ -145,7 +149,7 @@ namespace Console
                         consoleInput.text = "";
                         consoleInput.ActivateInputField();
                         inputIndex = inputLogs.Count;
-                        StartCoroutine(checkConsoleInput());
+                        //StartCoroutine(checkConsoleInput());
 
                     }
                 }

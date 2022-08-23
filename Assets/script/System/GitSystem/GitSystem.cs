@@ -300,7 +300,9 @@ public class GitSystem : MonoBehaviour , Panel
 
     public void trackFile(string fileName, string Content)
     {
+        Debug.Log(fileName + " " + Content);
         fileSystem.trackFile(fileName);
+        Debug.Log(modifiedFiles);
         modifiedFiles.Add( new KeyValuePair<string,string>(fileName, Content));
     }
     public void untrackFile(string fileName)
@@ -325,12 +327,19 @@ public class GitSystem : MonoBehaviour , Panel
 
     public bool cloneRepository(string remote)
     {
+        Debug.Log(remote);
         localObjects.SetActive(true);
         cloned = true;
         hasPush = false;
         sync = true;
-        return true;
-        if (!remotes.Contains(remote))
+        Debug.Log("before true");
+        //return true;
+        foreach (var remotezz in remotes)
+        {
+            Debug.Log(remotezz);
+        }
+
+        if (remotes.Contains(remote))
         {
             localObjects = Instantiate(remoteObjects, remoteObjects.transform.parent);
             localObjects.GetComponent<RectTransform>().localPosition = new Vector3(0, -125, 0);
@@ -351,10 +360,12 @@ public class GitSystem : MonoBehaviour , Panel
             mainFlag.GetComponent<Image>().color = Color.red;
             //headFlag = mainFlag;
             //flagObjects.Add(mainFlag);
+            Debug.Log("true");
             return true;
         }
         else
         {
+            Debug.Log("false");
             return false;
         }
     }

@@ -7,14 +7,39 @@ public class Level5 : Level
 
     private void Start()
     {
+
         setUp();
+
+        
+
+        gitSystem.addRemote("server"); 
         gitSystem.serverRepository = new Repository();
+
         Commit firstCommit = new Commit("init commit", "");
-        Commit secondCommit = new Commit("Add ignore", "");
-        Commit thirdCommit = new Commit("front update", "");
+        firstCommit.addModifiedFile(new KeyValuePair<string, string>("index", "init"));
         gitSystem.serverRepository.Commit(firstCommit);
+
+        Commit secondCommit = new Commit("Add ignore", "");
+        secondCommit.addModifiedFile(new KeyValuePair<string, string>("page1", "init"));
         gitSystem.serverRepository.Commit(secondCommit);
+
+        Commit thirdCommit = new Commit("front update", "");
+        thirdCommit.addModifiedFile(new KeyValuePair<string, string>("page1", "HelloWorld !\nsomeone changed"));
         gitSystem.serverRepository.Commit(thirdCommit);
+
+        // gitSystem.buildRepository();
+        // setUp();
+        // gitSystem.addRemote("server");
+        // gitSystem.serverRepository = new Repository();
+        // Debug.Log( " 1");
+        // Commit firstCommit = new Commit("init commit", "");
+        // Commit secondCommit = new Commit("Add ignore", "");
+        // Commit thirdCommit = new Commit("front update", "");
+        // Debug.Log( " 2");
+
+        // gitSystem.serverRepository.Commit(firstCommit);
+        // gitSystem.serverRepository.Commit(secondCommit);
+        // gitSystem.serverRepository.Commit(thirdCommit);
     }
     // Update is called once per frame
     void Update()
