@@ -29,7 +29,7 @@ public class StudentEventManager : MonoBehaviour
     IEnumerator logEvent(string eventName, string eventContent)
     {
         WWWForm form = new WWWForm();
-        Debug.Log("logEvent");
+       // Debug.Log("logEvent");
         form.AddField("username", username);
 
         form.AddField("eventName", eventName);

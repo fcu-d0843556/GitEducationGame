@@ -67,7 +67,7 @@ public class LeaderBoard : MonoBehaviour
             yield return www.SendWebRequest();
             
             string jsonString = JsonHelper.fixJson(www.downloadHandler.text);
-            Debug.Log("jsonString :  "  + jsonString);
+            //Debug.Log("jsonString :  "  + jsonString);
             levelLeaderboardRecords = JsonHelper.FromJson<LevelRecord>(jsonString);
 
             updateLevelLeaderboard();
@@ -78,7 +78,7 @@ public class LeaderBoard : MonoBehaviour
 
     public IEnumerator logLevelRecord(int timeCost , int lineCost , int level)
     {
-        Debug.Log("logLevelRecord");
+        //Debug.Log("logLevelRecord");
         WWWForm form = new WWWForm();
 
         form.AddField("username", GameSystemManager.GetSystem<StudentEventManager>().username);
@@ -117,7 +117,7 @@ public class LeaderBoard : MonoBehaviour
             yield return www.SendWebRequest();
             string jsonString = JsonHelper.fixJson(www.downloadHandler.text);
             pointsLeaderboardRecords = JsonHelper.FromJson<PointsRecord>(jsonString);
-            Debug.Log("jsonString" + jsonString);
+            //Debug.Log("jsonString" + jsonString);
             updatePointsPointsLeaderboard();
         }
 

@@ -107,7 +107,7 @@ public class Level : MonoBehaviour
 
     IEnumerator achievementSet()
     {
-        Debug.Log("achievementSet");
+        //Debug.Log("achievementSet");
         // achieve 1
         if (nowLevel == levelScene.Level1)
         {

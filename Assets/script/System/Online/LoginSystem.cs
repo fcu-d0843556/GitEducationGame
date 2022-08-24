@@ -85,8 +85,8 @@ public class LoginSystem : MonoBehaviour
                 loginJson loginResult = JsonUtility.FromJson<loginJson>(www.downloadHandler.text);
                 if (loginResult.status)
                 {
-                    Debug.Log("loginAuth loginResult.token");
-                    Debug.Log(loginResult.token);
+                    //Debug.Log("loginAuth loginResult.token");
+                    //Debug.Log(loginResult.token);
                     loginStatus.text = "登入狀態：登入成功";
                     loginButton.GetComponentInChildren<Text>().text = "登出帳號";
                     startButton.interactable = true;

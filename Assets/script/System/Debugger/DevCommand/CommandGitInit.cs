@@ -50,14 +50,14 @@ namespace Console
             }
             if (param[1] == "add")
             {
-                Debug.Log("add");
+                //Debug.Log("add");
                 if (param.Length != 3)
                 {
                     console.AddMessageToConsole("Error format");
                 }
                 else
                 {
-                    Debug.Log(param[2]);
+                    //Debug.Log(param[2]);
                     gitSystem.trackFile(param[2], "test");
                 }
             }
@@ -130,7 +130,7 @@ namespace Console
                 {
                     gitSystem.createBranch(param[2]);
                 }
-                else if (param.Length == 4 && param[2] == "-D")
+                else if (param.Length == 4 && param[2] == "-D" || param[2] == "-d")
                 {
                     gitSystem.deleteBranch(param[3]);
                 }

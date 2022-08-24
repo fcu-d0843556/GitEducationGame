@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Console;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -95,7 +96,7 @@ public class GitSystem : MonoBehaviour , Panel
 
     public void Commit(string name)
     {
-        Debug.Log("Commit!! " + name);
+        //Debug.Log("Commit!! " + name);
         if (hasRepository() && !conflicted)
         {
 
@@ -108,13 +109,13 @@ public class GitSystem : MonoBehaviour , Panel
             }
             if (nowCommit == null)
             {
-                Debug.Log("nowCommit null ");
+                //Debug.Log("nowCommit null ");
                 nowCommit = startCommit;
                 startCommit.SetActive(true);
             }
             else
             {
-                Debug.Log("nowCommit not null! ");
+                //Debug.Log("nowCommit not null! ");
                 GameObject newCommitObject = Instantiate(nowCommit, nowCommit.transform.parent);
                 newCommitObject.transform.GetChild(1).gameObject.SetActive(true);
                 newCommitObject.GetComponent<RectTransform>().localPosition = new Vector3(nowCommit.GetComponent<RectTransform>().localPosition.x - 150, nowCommit.GetComponent<RectTransform>().localPosition.y, nowCommit.GetComponent<RectTransform>().localPosition.z);
@@ -296,7 +297,15 @@ public class GitSystem : MonoBehaviour , Panel
             Destroy(remoteObjects);
         }
         remoteObjects = Instantiate(localObjects, localObjects.transform.parent);
+        remoteObjects.name = "remote";
         remoteObjects.GetComponent<RectTransform>().localPosition = new Vector3(0, 174, 0);
+        foreach (Transform remoteObject in remoteObjects.transform)
+        {
+            if(remoteObject.name == "masterFlag") {
+                remoteObject.GetComponent<Image>().color = Color.white;
+            }
+        }
+        
         hasPush = true;
         sync = true;
     }
@@ -305,9 +314,9 @@ public class GitSystem : MonoBehaviour , Panel
 
     public void trackFile(string fileName, string Content)
     {
-        Debug.Log(fileName + " " + Content);
+        //Debug.Log(fileName + " " + Content);
         fileSystem.trackFile(fileName);
-        Debug.Log(modifiedFiles);
+        //Debug.Log(modifiedFiles);
         modifiedFiles.Add( new KeyValuePair<string,string>(fileName, Content));
     }
     public void untrackFile(string fileName)
@@ -332,17 +341,10 @@ public class GitSystem : MonoBehaviour , Panel
 
     public bool cloneRepository(string remote)
     {
-        Debug.Log(remote);
         localObjects.SetActive(true);
         cloned = true;
         hasPush = false;
         sync = true;
-        Debug.Log("before true");
-        //return true;
-        // foreach (var remotezz in remotes)
-        // {
-        //     Debug.Log(remotezz);
-        // }
 
         if (remotes.Contains(remote))
         {
@@ -384,8 +386,8 @@ public class GitSystem : MonoBehaviour , Panel
             //mainFlag = localObjects.transform.GetChild(0).gameObject;
             sync = true;
             hasPush = false;
-            //fileSystem.NewFile("index","<h1>Hello World!</h1>");
-            //fileSystem.NewFile("page1", "<h2>page1</h2>");
+            // fileSystem.NewFile("index","<h1>Hello World!</h1>");
+            // fileSystem.NewFile("page1", "<h2>page1</h2>");
 
             if (modifiedFiles == null)
             {
@@ -394,12 +396,12 @@ public class GitSystem : MonoBehaviour , Panel
             mainFlag.GetComponent<Image>().color = Color.red;
             //headFlag = mainFlag;
             //flagObjects.Add(mainFlag);
-            Debug.Log("true");
+            //Debug.Log("true");
             return true;
         }
         else
         {
-            Debug.Log("false");
+            //Debug.Log("false");
             return false;
         }
     }
@@ -407,14 +409,22 @@ public class GitSystem : MonoBehaviour , Panel
     public bool checkout(string name)
     {
         GameObject switchFlag = flagObjects.Find(x => x.name == name + "Flag");
+        if(switchFlag == headFlag){
+            GameSystemManager.GetSystem<DeveloperConsole>().AddMessageToConsole("Already on " + '\'' + name + '\'');
+            return true;
+        }
+
         if(switchFlag == null)
         {
+            Debug.Log("switchFlag == null");
             return false;
         }
+        Debug.Log("switchFlag !== null");
         switchFlag.GetComponent<Image>().color = Color.red;
         string oldBranch = localRepository.nowBranch.branchName;
         localRepository.switchBranch(name);
         headFlag.GetComponent<Image>().color = Color.white;
+        Debug.Log(headFlag.transform.name);
         headFlag = switchFlag;
         nowCommit = commitObjects.Find(x => x.name == localRepository.nowBranch.branchName + "_" +localRepository.nowBranch.nowCommit.name );
         if(nowCommit == null)
@@ -427,16 +437,15 @@ public class GitSystem : MonoBehaviour , Panel
 
     public bool createBranch(string name)
     {
-        if (localRepository.hasBranch(name))
-            return false;
-    
+        if (localRepository.hasBranch(name)) return false;
+
         localRepository.CreateBranch(name);
         GameObject newFlag;
         newFlag = Instantiate(headFlag, headFlag.transform.parent);
         newFlag.GetComponent<Image>().color = Color.white;
         newFlag.GetComponentInChildren<Text>().text = name;
         newFlag.transform.GetChild(0).GetComponent<RectTransform>().localPosition = new Vector3(80 - name.Length * 6, -70, 0);
-        newFlag.GetComponent<RectTransform>().position = new Vector3(headFlag.GetComponent<RectTransform>().position.x - 125, headFlag.GetComponent<RectTransform>().position.y, headFlag.GetComponent<RectTransform>().position.z);
+        newFlag.GetComponent<RectTransform>().position = new Vector3(headFlag.GetComponent<RectTransform>().position.x, headFlag.GetComponent<RectTransform>().position.y - 170, headFlag.GetComponent<RectTransform>().position.z);
         newFlag.name = name + "Flag";
         flagObjects.Add(newFlag);
         localRepository.nowBranch.nowCommit.branchUsed++;

@@ -21,7 +21,7 @@ public class ChapterSystem : MonoBehaviour
 
     public IEnumerator getUserEventsFilterLevelPassed(string username)
     {
-        Debug.Log("FilterLevelPassed");
+       // Debug.Log("FilterLevelPassed");
 
         using (UnityWebRequest www = UnityWebRequest.Get(getLevelPassedApi + "?username=" + username))
         {   
@@ -39,7 +39,7 @@ public class ChapterSystem : MonoBehaviour
                 }
 
                 levelPassedEvent[] studentEvents = JsonHelper.FromJson<levelPassedEvent>(jsonString);
-                Debug.Log(studentEvents.Length);
+                //Debug.Log(studentEvents.Length);
 
                 for (int i = 0; i < studentEvents.Length; i++)
                 {

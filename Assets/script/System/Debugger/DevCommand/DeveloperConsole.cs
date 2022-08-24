@@ -144,8 +144,9 @@ namespace Console
                         {
                             GameSystemManager.GetSystem<StudentEventManager>().logStudentEvent("console_input", "{input:'" + inputText.text + "'}");
                         }
-
+                        // Debug.Log("Before ParseInput: " + inputText.text);
                         ParseInput(inputText.text);
+                        // Debug.Log("After ParseInput: " + inputText.text);
                         consoleInput.text = "";
                         consoleInput.ActivateInputField();
                         inputIndex = inputLogs.Count;
@@ -196,7 +197,7 @@ namespace Console
                 www.SetRequestHeader("Authorization", "Bearer " + GameSystemManager.GetSystem<StudentEventManager>().getJwtToken());
                 yield return www.SendWebRequest();
                 string jsonString = JsonHelper.fixJson(www.downloadHandler.text);
-                Debug.Log("checkConsoleInput jsonString: " + jsonString);
+                //Debug.Log("checkConsoleInput jsonString: " + jsonString);
                 ConsoleInputEvent[] events = JsonHelper.FromJson<ConsoleInputEvent>(jsonString);
                 consoleInputCount = events.Length;
                 if (consoleInputCount >= 100)

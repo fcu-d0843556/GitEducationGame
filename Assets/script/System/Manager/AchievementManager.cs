@@ -99,12 +99,12 @@ public class AchievementManager : MonoBehaviour
     public IEnumerator logAchievement(int achievementId)
     {
         WWWForm form = new WWWForm();
-        Debug.Log("logAchievement");
+        //Debug.Log("logAchievement");
         form.AddField("username", GameSystemManager.GetSystem<StudentEventManager>().username);
 
         
         string achievement = "{ id:" + (achievementId) + "}";
-        Debug.Log("achievement: " + achievement);
+       // Debug.Log("achievement: " + achievement);
         form.AddField("achievement", achievement);
         
         // Debug.Log("form: " + form);
@@ -116,7 +116,7 @@ public class AchievementManager : MonoBehaviour
             yield return www.SendWebRequest();
 
             string result = www.downloadHandler.text;
-            Debug.Log("result: " + result);
+           // Debug.Log("result: " + result);
             if (!result.Equals("{\"message\":\"Already have this achievement\"}"))
             {
                 achieve(achievementId,DateTime.Now.ToString());

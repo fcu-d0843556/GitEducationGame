@@ -9,9 +9,6 @@ public class Level5 : Level
     {
 
         setUp();
-
-        
-
         gitSystem.addRemote("server"); 
         gitSystem.serverRepository = new Repository();
 
@@ -28,18 +25,7 @@ public class Level5 : Level
         gitSystem.serverRepository.Commit(thirdCommit);
 
         gitSystem.buildRepository();
-        // setUp();
-        // gitSystem.addRemote("server");
-        // gitSystem.serverRepository = new Repository();
-        // Debug.Log( " 1");
-        // Commit firstCommit = new Commit("init commit", "");
-        // Commit secondCommit = new Commit("Add ignore", "");
-        // Commit thirdCommit = new Commit("front update", "");
-        // Debug.Log( " 2");
 
-        // gitSystem.serverRepository.Commit(firstCommit);
-        // gitSystem.serverRepository.Commit(secondCommit);
-        // gitSystem.serverRepository.Commit(thirdCommit);
     }
     // Update is called once per frame
     void Update()
