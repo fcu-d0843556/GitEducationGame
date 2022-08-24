@@ -27,7 +27,7 @@ public class Level5 : Level
         thirdCommit.addModifiedFile(new KeyValuePair<string, string>("page1", "HelloWorld !\nsomeone changed"));
         gitSystem.serverRepository.Commit(thirdCommit);
 
-        // gitSystem.buildRepository();
+        gitSystem.buildRepository();
         // setUp();
         // gitSystem.addRemote("server");
         // gitSystem.serverRepository = new Repository();

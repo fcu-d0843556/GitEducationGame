@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -93,6 +95,7 @@ public class GitSystem : MonoBehaviour , Panel
 
     public void Commit(string name)
     {
+        Debug.Log("Commit!! " + name);
         if (hasRepository() && !conflicted)
         {
 
@@ -105,11 +108,13 @@ public class GitSystem : MonoBehaviour , Panel
             }
             if (nowCommit == null)
             {
+                Debug.Log("nowCommit null ");
                 nowCommit = startCommit;
                 startCommit.SetActive(true);
             }
             else
             {
+                Debug.Log("nowCommit not null! ");
                 GameObject newCommitObject = Instantiate(nowCommit, nowCommit.transform.parent);
                 newCommitObject.transform.GetChild(1).gameObject.SetActive(true);
                 newCommitObject.GetComponent<RectTransform>().localPosition = new Vector3(nowCommit.GetComponent<RectTransform>().localPosition.x - 150, nowCommit.GetComponent<RectTransform>().localPosition.y, nowCommit.GetComponent<RectTransform>().localPosition.z);
@@ -127,7 +132,7 @@ public class GitSystem : MonoBehaviour , Panel
                 nowCommit.transform.GetChild(1).GetComponent<RectTransform>().localRotation = Quaternion.Euler(0, 0, 45);
                 nowCommit.transform.GetChild(1).GetComponent<RectTransform>().localPosition = new Vector3(67, 45, 0);
                 headFlag.GetComponent<RectTransform>().localPosition = new Vector3(headFlag.GetComponent<RectTransform>().localPosition.x, headFlag.GetComponent<RectTransform>().localPosition.y - 140 * size, headFlag.GetComponent<RectTransform>().localPosition.z);
-                nowCommit.GetComponent<Image>().color = Random.ColorHSV();
+                nowCommit.GetComponent<Image>().color = UnityEngine.Random.ColorHSV();
             }
             else
             {
@@ -334,20 +339,49 @@ public class GitSystem : MonoBehaviour , Panel
         sync = true;
         Debug.Log("before true");
         //return true;
-        foreach (var remotezz in remotes)
-        {
-            Debug.Log(remotezz);
-        }
+        // foreach (var remotezz in remotes)
+        // {
+        //     Debug.Log(remotezz);
+        // }
 
         if (remotes.Contains(remote))
         {
+            // GameObject cloneObjects = Instantiate(remoteObjects, localObjects.transform.parent);
+            // cloneObjects.GetComponent<RectTransform>().localPosition = new Vector3(0, -140, 0);
+            Destroy(localObjects);
             localObjects = Instantiate(remoteObjects, remoteObjects.transform.parent);
-            localObjects.GetComponent<RectTransform>().localPosition = new Vector3(0, -125, 0);
+            localObjects.name = "local";
+            int childCounts = localObjects.transform.childCount;
+            
+            foreach (Transform localObject in localObjects.transform)
+            {
+                int localObjectNumber = 0;
+                if(localObject.name.Contains("gitCommit"))
+                {
+                    if(localObject.name != "gitCommit")
+                    {
+                        localObjectNumber = Int32.Parse(localObject.name.Split("gitCommit")[1]);
+                        if (localObjectNumber == childCounts - 1)
+                        {
+                            nowCommit = localObject.gameObject;
+                        }
+                    }
+                    else
+                    {
+                        startCommit = localObject.gameObject;
+                    }
+                    
+                } else if(localObject.name == "masterFlag") {
+
+                    mainFlag = localObject.gameObject;
+                    headFlag = mainFlag;
+                }
+            }
+            
+            localObjects.GetComponent<RectTransform>().localPosition = new Vector3(0, -140, 0);
             cloned = true;
             //localRepository = serverRepository;
             //mainFlag = localObjects.transform.GetChild(0).gameObject;
-            //Debug.Log(localRepository.commitCounts());
-            nowCommit = localObjects.transform.GetChild(localRepository.commitCounts()).gameObject;
             sync = true;
             hasPush = false;
             //fileSystem.NewFile("index","<h1>Hello World!</h1>");
