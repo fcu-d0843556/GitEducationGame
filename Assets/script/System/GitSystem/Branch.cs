@@ -23,6 +23,16 @@ public class Branch
         nowCommit = commit;
         commitCounts = 1;
         branchStart = true;
+        commits.Add(commit);
+    }
+
+    public int resetCommit(string commitId)
+    {
+        int index = commits.FindIndex(x => x.id.Equals(commitId));
+        nowCommit = commits[index];
+        int removeCount = commits.Count - index - 1;
+        commits.RemoveRange(index + 1, removeCount);
+        return index;
     }
     public void updateCommit(Commit commit)
     {
@@ -31,7 +41,7 @@ public class Branch
         {
             nowCommit = commit;
             commitCounts = 1;
-            
+            commits.Add(commit);
         }
         else
         {

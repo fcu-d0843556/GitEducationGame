@@ -416,10 +416,10 @@ public class GitSystem : MonoBehaviour , Panel
 
         if(switchFlag == null)
         {
-            Debug.Log("switchFlag == null");
+            //Debug.Log("switchFlag == null");
             return false;
         }
-        Debug.Log("switchFlag !== null");
+        //Debug.Log("switchFlag !== null");
         switchFlag.GetComponent<Image>().color = Color.red;
         string oldBranch = localRepository.nowBranch.branchName;
         localRepository.switchBranch(name);
@@ -532,6 +532,20 @@ public class GitSystem : MonoBehaviour , Panel
         newTagObject.transform.localPosition = new Vector3(95 - newTagObject.GetComponent<Text>().text.Length * 5, -72, 0);
         newTagObject.SetActive(true);
         newTagObject.transform.SetParent(nowCommit.transform.parent);
+    }
+
+    public void reset(string mode, string commitId)
+    {
+        int resetCommitIndex = localRepository.nowBranch.resetCommit(commitId);
+        nowCommit = commitObjects[resetCommitIndex];
+        headFlag.GetComponent<RectTransform>().localPosition = new Vector3(nowCommit.GetComponent<RectTransform>().localPosition.x - 160, nowCommit.GetComponent<RectTransform>().localPosition.y + 5, headFlag.GetComponent<RectTransform>().localPosition.z);
+        int removeCommitIndex = resetCommitIndex + 1;
+        while( commitObjects.Count != resetCommitIndex+1)
+        {
+            GameObject destroyedCommitObject= commitObjects[removeCommitIndex];
+            commitObjects.RemoveAt(resetCommitIndex+1);
+            Destroy(destroyedCommitObject);
+        }
     }
 }
 

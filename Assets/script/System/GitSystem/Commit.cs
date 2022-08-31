@@ -6,6 +6,7 @@ public class Commit
 {
     public string name {  private set;  get; }
     public string description { private set; get; }
+    public string id { private set; get; }
     public List<KeyValuePair<string,string>> modifiedFiles { private set; get; }
     public List<KeyValuePair<string, string>> allFiles { private set; get; }
     public Commit nextCommit;
@@ -20,6 +21,7 @@ public class Commit
         modifiedFiles = new List<KeyValuePair<string, string>>();
         allFiles = new List<KeyValuePair<string, string>>();
         branchUsed = 0;
+        id = randomString(5);
     }
 
     public void addModifiedFile(KeyValuePair<string, string> file) 
@@ -53,4 +55,15 @@ public class Commit
         }
     }
 
+    static string chars = "0123456789abcdefghijklmnopqrstuvwxyz0123456789";
+    public static string randomString(int length)
+    {
+        int maxIndex = chars.Length-1;
+        string commitId = "";
+        for(int i = 0; i< length; i++)
+        {
+            commitId += chars[Random.Range(0, maxIndex)];
+        }
+        return commitId;
+    }
 }

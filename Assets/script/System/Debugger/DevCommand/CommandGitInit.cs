@@ -219,6 +219,10 @@ namespace Console
                     gitSystem.tag(param[2]);
                 }
             }
+            if (param[1] == "reset")
+            {
+                gitSystem.reset(param[2],param[3]);
+            }
 
         }
 
