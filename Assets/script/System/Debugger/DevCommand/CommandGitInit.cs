@@ -82,6 +82,7 @@ namespace Console
                 }
                 else
                 {
+                    Debug.Log("Commit");
                     gitSystem.Commit(param[3]);
                 }
 
@@ -205,6 +206,7 @@ namespace Console
                 }
                 else
                 {
+                    // Debug.Log("rebase: " + param[2]);
                     gitSystem.rebase(param[2]);
                 }
             }

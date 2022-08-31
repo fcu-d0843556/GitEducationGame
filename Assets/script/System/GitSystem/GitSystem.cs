@@ -109,19 +109,20 @@ public class GitSystem : MonoBehaviour , Panel
             }
             if (nowCommit == null)
             {
-                //Debug.Log("nowCommit null ");
+                // Debug.Log("nowCommit null ");
                 nowCommit = startCommit;
                 startCommit.SetActive(true);
             }
             else
             {
-                //Debug.Log("nowCommit not null! ");
+                // Debug.Log("nowCommit not null! ");
+                // Debug.Log("nowCommit  " + nowCommit);
                 GameObject newCommitObject = Instantiate(nowCommit, nowCommit.transform.parent);
                 newCommitObject.transform.GetChild(1).gameObject.SetActive(true);
                 newCommitObject.GetComponent<RectTransform>().localPosition = new Vector3(nowCommit.GetComponent<RectTransform>().localPosition.x - 150, nowCommit.GetComponent<RectTransform>().localPosition.y, nowCommit.GetComponent<RectTransform>().localPosition.z);
                 nowCommit = newCommitObject;
             }
-            nowCommit.GetComponentInChildren<Text>().text = name;
+            nowCommit.GetComponentInChildren<Text>().text = newCommit.name + "\ncommitId:" + newCommit.id;
             nowCommit.transform.GetChild(0).GetComponent<RectTransform>().localPosition = new Vector3(100 - newCommit.name.Length * 5, -49, 0);
             // normal flag set
             headFlag.GetComponent<RectTransform>().localPosition = new Vector3(nowCommit.GetComponent<RectTransform>().localPosition.x - 160, nowCommit.GetComponent<RectTransform>().localPosition.y + 5, headFlag.GetComponent<RectTransform>().localPosition.z);
@@ -153,6 +154,7 @@ public class GitSystem : MonoBehaviour , Panel
 
     public void Commit(Commit commit,string branch)
     {
+        
         if (hasRepository() && !conflicted)
         {
 
@@ -170,12 +172,15 @@ public class GitSystem : MonoBehaviour , Panel
             }
             else
             {
+                // Debug.Log("nowCommit" + nowCommit);
+                // Debug.Log(branch + "_" + commit.name);
+                // Debug.Log("Find :" + GameObject.Find(branch + "_" + commit.name).name);
                 GameObject newCommitObject = Instantiate(GameObject.Find(branch + "_" + commit.name), nowCommit.transform.parent);
                 newCommitObject.transform.GetChild(1).gameObject.SetActive(true);
                 newCommitObject.GetComponent<RectTransform>().localPosition = new Vector3(nowCommit.GetComponent<RectTransform>().localPosition.x - 150, nowCommit.GetComponent<RectTransform>().localPosition.y, nowCommit.GetComponent<RectTransform>().localPosition.z);
                 nowCommit = newCommitObject;
             }
-            nowCommit.GetComponentInChildren<Text>().text = newCommit.name;
+            nowCommit.GetComponentInChildren<Text>().text = newCommit.name + "\ncommitId:" + newCommit.id;
             nowCommit.transform.GetChild(0).GetComponent<RectTransform>().localPosition = new Vector3(100 - newCommit.name.Length * 5, -49, 0);
             // normal flag set
             headFlag.GetComponent<RectTransform>().localPosition = new Vector3(nowCommit.GetComponent<RectTransform>().localPosition.x - 160, nowCommit.GetComponent<RectTransform>().localPosition.y + 5, headFlag.GetComponent<RectTransform>().localPosition.z);
@@ -410,7 +415,7 @@ public class GitSystem : MonoBehaviour , Panel
     {
         GameObject switchFlag = flagObjects.Find(x => x.name == name + "Flag");
         if(switchFlag == headFlag){
-            GameSystemManager.GetSystem<DeveloperConsole>().AddMessageToConsole("Already on " + '\'' + name + '\'');
+            GameSystemManager.GetSystem<DeveloperConsole>().AddMessageToConsole("Already on " + '\"' + name + '\"');
             return true;
         }
 
@@ -424,7 +429,7 @@ public class GitSystem : MonoBehaviour , Panel
         string oldBranch = localRepository.nowBranch.branchName;
         localRepository.switchBranch(name);
         headFlag.GetComponent<Image>().color = Color.white;
-        Debug.Log(headFlag.transform.name);
+        //Debug.Log(headFlag.transform.name);
         headFlag = switchFlag;
         nowCommit = commitObjects.Find(x => x.name == localRepository.nowBranch.branchName + "_" +localRepository.nowBranch.nowCommit.name );
         if(nowCommit == null)
@@ -505,9 +510,20 @@ public class GitSystem : MonoBehaviour , Panel
 
     public void rebase(string branch)
     {
+        if(headFlag.name.Split("Flag")[0] == branch){
+            GameSystemManager.GetSystem<DeveloperConsole>().AddMessageToConsole("Current branch "+ '\"' + branch + '\"' + " is up to date.");
+            return;
+        }
+
         List<Commit> oldBranchCommits = localRepository.getBranch(branch).commits;
         for (int i= 0; i < oldBranchCommits.Count; i++)
         {
+            Debug.Log(oldBranchCommits[i].name);
+        }
+
+        for (int i= 1; i < oldBranchCommits.Count; i++)
+        {
+
             Commit(oldBranchCommits[i], branch);
         }
         for (int i =0; i< commitObjects.Count; i++)

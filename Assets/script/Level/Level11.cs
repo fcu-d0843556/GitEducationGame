@@ -24,6 +24,15 @@ public class Level11 : Level
 
         gitSystem.createBranch("branchA");
 
+        //Debug Start
+        // gitSystem.checkout("branchA");
+        // gitSystem.Commit("a");
+        // gitSystem.Commit("b");
+        // gitSystem.Commit("c");
+
+        // gitSystem.checkout("master");
+        //Debug End
+
         GameSystemManager.GetSystem<TimerManager>().Add(new Timer(0.05f, push , null));
 
 
@@ -60,8 +69,8 @@ public class Level11 : Level
         }
         if (!targetSystem.targetStatus[3] && targetSystem.targetStatus[2] && gitSystem.hasPush  && gitSystem.sync == true)
         {
-            targetSystem.targetStatus[2] = true;
-            targetSystem.AccomplishTarget(2);
+            targetSystem.targetStatus[3] = true;
+            targetSystem.AccomplishTarget(3);
         }
         updateTarget();
         levelCostCount();
