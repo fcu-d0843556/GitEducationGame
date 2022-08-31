@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Title: MonoBehaviour
 {
@@ -11,7 +12,15 @@ public class Title: MonoBehaviour
 
     public void StartGame()
     {
-        GameSystemManager.GetSystem<SceneStateManager>().LoadSceneState( new LoadSceneState("MainSceneState", "Level0Scene") ,true);
+        
+        int level = GameSystemManager.GetSystem<LevelManager>().getLatestLevel();
+        int totalLevels = GameSystemManager.GetSystem<LevelManager>().getTotalLevels();
+        if ( level != totalLevels){
+            GameSystemManager.GetSystem<SceneStateManager>().LoadSceneState( new LoadSceneState("MainSceneState",  "Level" + (level + 1) + "Scene") ,true);
+        } else {
+            GameSystemManager.GetSystem<SceneStateManager>().LoadSceneState( new LoadSceneState("MainSceneState",  "Level" + totalLevels + "Scene") ,true);
+        }
+        
     }
     
     public void openChapterSelector()

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,8 @@ public class LoginSystem : MonoBehaviour
 
     string loginApi;
     string registerApi;
+    string getLevelPassedApi;
+
     [SerializeField]
     GameObject loginDialogue;
     [SerializeField]
@@ -43,9 +46,14 @@ public class LoginSystem : MonoBehaviour
             achievementButton.interactable = true;
             loginButton.onClick.RemoveAllListeners();
             loginButton.onClick.AddListener(logout);
+            if(!GameSystemManager.GetSystem<LevelManager>().getLatestLevel().Equals("-1")){
+                startButton.GetComponentInChildren<Text>().text = "繼續遊戲";
+            }
+            
         }
         loginApi = GameSystemManager.GetSystem<ApiManager>().getApiUrl("login");
         registerApi = GameSystemManager.GetSystem<ApiManager>().getApiUrl("register");
+        getLevelPassedApi = GameSystemManager.GetSystem<ApiManager>().getApiUrl("getLevelPassed");
     }
 
     public void loginDialogueShow()
@@ -97,6 +105,7 @@ public class LoginSystem : MonoBehaviour
                     loginButton.onClick.RemoveAllListeners();
                     loginButton.onClick.AddListener(logout);
                     achievementButton.interactable = true;
+                    StartCoroutine(getLatestContinueLevel(username.text));
                 }
                 else
                 {
@@ -154,9 +163,51 @@ public class LoginSystem : MonoBehaviour
         chapterButton.interactable = false;
         achievementButton.interactable = false;
         loginButton.GetComponentInChildren<Text>().text = "登入帳號";
+        startButton.GetComponentInChildren<Text>().text = "開始遊戲";
         loginButton.onClick.RemoveAllListeners();
         loginButton.onClick.AddListener(loginDialogueShow);
         username.text = "";
         password.text = "";
+    }
+
+    IEnumerator getLatestContinueLevel(string username){
+        using (UnityWebRequest www = UnityWebRequest.Get(getLevelPassedApi + "?username=" + username))
+        {  
+            www.SetRequestHeader("Authorization", "Bearer " + GameSystemManager.GetSystem<StudentEventManager>().getJwtToken());
+            yield return www.SendWebRequest();
+            string jsonString = JsonHelper.fixJson(www.downloadHandler.text);
+
+            int latestLevel = 0;
+            int clearLevel = 0;
+
+            if(jsonString.Contains("level")){
+                levelPassedEvent[] studentEvents = JsonHelper.FromJson<levelPassedEvent>(jsonString);
+                for (int i = studentEvents.Length-1; i >= 0; i--)
+                {
+                    clearLevel = Int32.Parse(studentEvents[i].eventContent.level.Split("Level")[1]);
+                    if(clearLevel > latestLevel){
+                        latestLevel = clearLevel;
+                    }
+                }
+
+                startButton.GetComponentInChildren<Text>().text = "繼續遊戲";
+            }else{
+                latestLevel = -1;
+            }
+            GameSystemManager.GetSystem<LevelManager>().setLatestLevel(latestLevel);
+        }
+    } 
+
+    [System.Serializable]
+    public class levelPassedEvent
+    {
+        public string username;
+        public LevelRecord eventContent;
+    }
+
+    [System.Serializable]
+    public class LevelRecord
+    {
+        public string level;
     }
 }

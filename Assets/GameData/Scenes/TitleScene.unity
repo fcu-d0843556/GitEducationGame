@@ -6111,7 +6111,7 @@ PrefabInstance:
     - target: {fileID: 114038124425410868, guid: 971877453d3f30b418c1ed95760d50c1,
         type: 3}
       propertyPath: _prefab.Array.size
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 114038124425410868, guid: 971877453d3f30b418c1ed95760d50c1,
         type: 3}
@@ -6136,6 +6136,12 @@ PrefabInstance:
       propertyPath: _prefab.Array.data[4]
       value: 
       objectReference: {fileID: 7651982791664785496, guid: ee5ef523cc37e774e872b4e988abc40a,
+        type: 3}
+    - target: {fileID: 114038124425410868, guid: 971877453d3f30b418c1ed95760d50c1,
+        type: 3}
+      propertyPath: _prefab.Array.data[5]
+      value: 
+      objectReference: {fileID: 8065693912716498063, guid: f3c7b1b2a9310174491b0eeb3edc41d6,
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 971877453d3f30b418c1ed95760d50c1, type: 3}
@@ -7956,6 +7962,7 @@ MonoBehaviour:
   - {fileID: 295540967}
   - {fileID: 404311691}
   - {fileID: 152832593}
+  - {fileID: 707536921}
 --- !u!1 &1668424646
 GameObject:
   m_ObjectHideFlags: 0

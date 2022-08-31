@@ -19,6 +19,8 @@ public class Initialization : MonoBehaviour {
             GameSystemManager.AddSystem<LeaderBoard>(Instantiate(_prefab[2]));
         if (!GameSystemManager.GetSystem<AchievementManager>())
             GameSystemManager.AddSystem<AchievementManager>(Instantiate(_prefab[3]));
+        if (!GameSystemManager.GetSystem<LevelManager>())
+            GameSystemManager.AddSystem<LevelManager>(Instantiate(_prefab[5]));
     }
 
 

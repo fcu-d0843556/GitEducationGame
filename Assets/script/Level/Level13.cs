@@ -57,7 +57,7 @@ public class Level13 : Level
             targetSystem.targetStatus[3] = true;
             targetSystem.AccomplishTarget(3);
         }
-        if (!targetSystem.targetStatus[4] && targetSystem.targetStatus[3] && gitSystem.localRepository.nowBranch.branchName == "John")
+        if (!targetSystem.targetStatus[4] && targetSystem.targetStatus[3] && gitSystem.localRepository.nowBranch.branchName.Equals("John"))
         {
             Console.ConsoleCommand command = GameSystemManager.GetSystem<Console.DeveloperConsole>().lastExecuteCommand;
             Console.CommandGitInit gitCommand = (Console.CommandGitInit)command;

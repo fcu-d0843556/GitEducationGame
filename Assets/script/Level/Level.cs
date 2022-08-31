@@ -88,6 +88,7 @@ public class Level : MonoBehaviour
     {
         if (!targetSystem.targetStatus.Contains(false) && !passedLevel)
         {
+            Debug.Log("clear!!!");
             passedLevelTips.SetActive(true);
             passedLevel = true;
             if (nowLevel != levelScene.Level0)
@@ -97,6 +98,7 @@ public class Level : MonoBehaviour
                 passedLevelTips.transform.GetChild(0).GetChild(0).GetChild(1).GetComponent<Text>().text =
                     "您使用了" + costLines + "行指令\n" + "並花費" + (int)levelCost + "秒通關";
             }
+            GameSystemManager.GetSystem<LevelManager>().latestLevelcleared();
             GameSystemManager.GetSystem<StudentEventManager>().logStudentEvent("level_passed", "{level:'" + nowLevel + "'" +
                 ", line_cost:'" + costLines + "', time_cost:'" + (int)levelCost + "' }");
             StartCoroutine(achievementSet());

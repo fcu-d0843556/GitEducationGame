@@ -20,6 +20,7 @@ public class GameSystemManager  {
                 AddUpdate(GetSystem<SceneStateManager>().UpdateScene); // add Update scene function
                 AddSystem<TimerManager>(TimerManager.Instance); // 計時管理器
                 AddUpdate(GetSystem<TimerManager>().Update); // add 計時 update function
+                
             }
 
             return _instance;
@@ -119,7 +120,7 @@ public class GameSystemManager  {
         }
 
         //Debug.LogException(new Exception(string.Format("[GameSystemManager] - GameSystemManager of {0} doesn't exist!", typeof(T).Name)));
-
+        //Debug.Log("nono");
         return null;
     }
 
