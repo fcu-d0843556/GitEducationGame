@@ -41,6 +41,10 @@ public class Level : MonoBehaviour
         Level8,
         Level9,
         Level10,
+        Level11,
+        Level12,
+        Level13,
+        Level14,
         Level0,
     };
     [SerializeField]
@@ -119,7 +123,7 @@ public class Level : MonoBehaviour
             StartCoroutine(GameSystemManager.GetSystem<AchievementManager>().logAchievement(2));
         }
         // achieve 3
-        if (nowLevel == levelScene.Level9)
+        if (nowLevel == levelScene.Level14)
         {
             StartCoroutine(GameSystemManager.GetSystem<AchievementManager>().logAchievement(3));
         }

@@ -9,6 +9,12 @@ public class Level14 : Level
     {
         setUp();
         gitSystem.buildRepository();
+
+        nextLevelButton.onClick.RemoveAllListeners();
+        nextLevelButton.onClick.AddListener(delegate
+        {
+            GameSystemManager.GetSystem<SceneStateManager>().LoadSceneState(new LoadSceneState("MainSceneState","TitleScene"), true);
+        });
     }
 
 

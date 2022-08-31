@@ -35,11 +35,7 @@ public class Level9 : Level
          gitSystem.trackFile("page2", "master update page2");
          gitSystem.Commit("update page2");
 
-        nextLevelButton.onClick.RemoveAllListeners();
-        nextLevelButton.onClick.AddListener(delegate
-        {
-            GameSystemManager.GetSystem<SceneStateManager>().LoadSceneState(new LoadSceneState("MainSceneState","TitleScene"), true);
-        });
+        
     }
     // Update is called once per frame
     void Update()
