@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -29,10 +30,10 @@ namespace Console
             }
             else
             {
-                bool end = GameObject.Find("FileObject").GetComponent<FileSystem>().CopyFile(param[1],param[2]);
-                if (!end)
+                Tuple<bool,string> end = GameObject.Find("FileObject").GetComponent<FileSystem>().CopyFile(param[1],param[2]);
+                if (!end.Item1)
                 {
-                    GameSystemManager.GetSystem<DeveloperConsole>().AddMessageToConsole("Cannot find file");
+                    GameSystemManager.GetSystem<DeveloperConsole>().AddMessageToConsole(end.Item2);
                 }
             }
         }

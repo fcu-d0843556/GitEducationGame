@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -135,18 +136,29 @@ public class FileSystem : MonoBehaviour
         return true;
     }
 
-    public bool CopyFile(string originalFile, string newFile)
+    public Tuple<bool, string> CopyFile(string originalFile, string newFile)
     {
-        if (fileNames.Count == maxFileCount)
-            return false;
+        if(originalFile == newFile) return Tuple.Create(false, "they are the same file.");
+
+        for (int i = 0; i < fileNames.Count; i++)
+        {
+            if(fileNames[i] == newFile) {
+                fileNames.Remove(newFile);
+                fileContents.Remove(fileContents[i]);
+            }
+        }
+        
+        if (fileNames.Count == maxFileCount) return Tuple.Create(false, "請移除多餘的檔案");
 
         int index = fileNames.FindIndex(a => a == originalFile);
-        if (index == -1)
-            return false;
+        if (index == -1) return Tuple.Create(false, "Cannot find file");
+
+        
 
         fileNames.Add(newFile);
         fileContents.Add(fileContents[index]);
 
+    
         for (int i = 0; i < fileNames.Count; i++)
         {
             fileObjects[i].GetComponentInChildren<Text>().text = fileNames[i];
@@ -154,7 +166,7 @@ public class FileSystem : MonoBehaviour
             btn.gameObject.name = i.ToString();
         }
         fileObjects[fileNames.Count - 1].SetActive(true);
-        return true;
+        return Tuple.Create(true, "Create successful.");
     }
 
     public List<string> getFilesName()

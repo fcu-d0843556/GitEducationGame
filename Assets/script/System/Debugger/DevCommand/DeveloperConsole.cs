@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -35,6 +36,7 @@ namespace Console
         public Text inputText;
         public InputField consoleInput;
 
+        public string[] inputCommands;
         public List<string> inputLogs;
         public ConsoleCommand lastExecuteCommand { get; private set; }
 
@@ -103,9 +105,13 @@ namespace Console
         public void ParseInput(string input)
         {
             string[] _input = input.Split(' ');
+            
+            _input = _input.Where(obj => obj != "").ToArray();
+            inputCommands = _input;
             // for(int i=0;i<_input.Length;i++){
-            //     Debug.Log(_input[i] + " _ ");
+            //     Debug.Log( " s" + _input[i] + "e ");
             // }
+
             if (_input.Length == 0 || _input == null)
             {
                 AddMessageToConsole("Command not recognized.");
@@ -132,7 +138,7 @@ namespace Console
             {
                 if ( (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return )))
                 {
-
+                    Debug.Log("enter: "+ inputText.text);
                     if (inputText.text != "")
                     {
                         AddMessageToConsole(inputText.text);
