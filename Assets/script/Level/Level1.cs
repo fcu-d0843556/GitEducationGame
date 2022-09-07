@@ -14,9 +14,13 @@ public class Level1 : Level
     {
         if (!targetSystem.targetStatus[0] && fileSystem.getFilesName().Contains("note1_copy"))
         {
-            //Debug.Log("g1");
-            targetSystem.targetStatus[0] = true;
-            targetSystem.AccomplishTarget(0);
+            string[] command = GameSystemManager.GetSystem<Console.DeveloperConsole>().inputCommands;
+            if (command != null && command[1].Equals("note1"))
+            {
+                targetSystem.targetStatus[0] = true;
+                targetSystem.AccomplishTarget(0);
+            }
+            
         }
         else if (targetSystem.targetStatus[0] && !fileSystem.getFilesName().Contains("note1_copy"))
         {
@@ -27,9 +31,12 @@ public class Level1 : Level
 
         if (!targetSystem.targetStatus[1] && fileSystem.getFilesName().Contains("note2_copy"))
         {
-            //Debug.Log("g2");
-            targetSystem.targetStatus[1] = true;
-            targetSystem.AccomplishTarget(1);
+            string[] command = GameSystemManager.GetSystem<Console.DeveloperConsole>().inputCommands;
+            if (command != null && command[1].Equals("note2"))
+            {
+                targetSystem.targetStatus[1] = true;
+                targetSystem.AccomplishTarget(1);
+            }
         }
         else if (targetSystem.targetStatus[1] && !fileSystem.getFilesName().Contains("note2_copy"))
         {
